@@ -173,6 +173,7 @@ installed_extras:
   - solr
   - upload-progress
   - java
+  - ruby
 
 # Add any extra apt or yum packages you would like installed.
 extra_packages: []
