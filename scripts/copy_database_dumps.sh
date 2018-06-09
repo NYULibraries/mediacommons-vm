@@ -22,25 +22,29 @@ function copy_database_dumps() {
   rsync -azvh -e "ssh -o ProxyCommand='ssh -W %h:%p ${NETWORK_HOST_USERNAME}@${BASTION_HOST}'" ${NETWORK_HOST_USERNAME}@${DEV_SERVER}:${DEV_SERVER_DATABASE_DUMPS}/ $DATABASE_DUMPS/
 }
 
-while getopts ":u:h" opt; do
- case $opt in
-  u)
-    NETWORK_HOST_USERNAME=$OPTARG
-    ;;
-  h)
+function help() {
    echo " "
-   echo " Usage: ./copy_database_dumps.sh -u dlts"
+   echo " Usage: ./copy_database_dumps.sh -u username"
    echo " "
    echo " Options:"   
    echo "   -u      User to use for secure network connection"
    echo "   -h      Show brief help"
    echo " "
    exit 0
-   ;;
+}
+
+while getopts ":u:h" opt; do
+ case $opt in
+  u)
+    NETWORK_HOST_USERNAME=$OPTARG
+    ;;
+  h)
+    help
+    ;;
   esac
 done
 
-[ $NETWORK_HOST_USERNAME ] || die ${LINENO} "critical error" "No network user provided."
+[ $NETWORK_HOST_USERNAME ] || die ${LINENO} "critical error" "No network user provided. E.g., -u username"
 
 # Bastion server
 BASTION_HOST=b.dlib.nyu.edu

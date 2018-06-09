@@ -39,6 +39,7 @@ function copy_sites() {
   for site in ${ALL_SITES[*]}
     do
       cp -r ${VAGRANT_DIR}/code/mediacommons_core/drupal ${VAGRANT_DIR}/builds/${site}
+      mv ${VAGRANT_DIR}/builds/${site}/.htaccess.off ${VAGRANT_DIR}/builds/${site}/.htaccess
   done
 }
 
@@ -65,6 +66,15 @@ function configure_solr() {
   sudo service solr restart
 }
 
+function configure_alias() {
+  echo "alias drush=/vagrant/code/mediacommons/bin/drush" >> ~/.bash_aliases
+  echo "alias copy_database_dumps=/vagrant/scripts/copy_database_dumps.sh" >> ~/.bash_aliases
+  echo "alias copy_sites=/vagrant/scripts/copy_sites.sh" >> ~/.bash_aliases
+  echo "alias clean_cache=/vagrant/scripts/clean_cache.sh" >> ~/.bash_aliases  
+  echo "alias solr=/vagrant/scripts/solr.sh" >> ~/.bash_aliases  
+  echo "alias import_database_dump=/vagrant/scripts/import_database_dump.sh" >> ~/.bash_aliases
+}
+
 VAGRANT_DIR=/vagrant
 
 SETUP_COMPLETE_FILE=${VAGRANT_DIR}/scripts/init.out
@@ -77,15 +87,17 @@ if [ ! -e "$SETUP_COMPLETE_FILE" ]; then
   # Code directory
   mkdir -p ${VAGRANT_DIR}/code ${VAGRANT_DIR}/data/databases ${VAGRANT_DIR}/builds
 
-  create_mycnf
-
   get_repos
 
   link_repos
 
   copy_sites
 
+  create_mycnf
+
   configure_solr
+
+  configure_alias
 
   sudo apachectl restart
 

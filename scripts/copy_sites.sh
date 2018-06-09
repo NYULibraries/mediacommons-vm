@@ -26,25 +26,29 @@ function copy_site() {
   echo "\$databases['default']['default']['database'] = '$database'; \$databases['default']['default']['username'] = 'root'; \$databases['default']['default']['password'] = 'root'; \$cookie_domain = '.mediacommons.local'; \$conf['file_temporary_path'] = '/tmp';" >> /vagrant/builds/${site}/sites/default/settings.php
 }
 
-while getopts ":u:h" opt; do
- case $opt in
-  u)
-    NETWORK_HOST_USERNAME=$OPTARG
-    ;;
-  h)
+function help() {
    echo " "
-   echo " Usage: ./copy_sites.sh -u dlts"
+   echo " Usage: ./copy_sites.sh -u username"
    echo " "
    echo " Options:"   
    echo "   -u      User to use for secure network connection"
    echo "   -h      Show brief help"
    echo " "
    exit 0
-   ;;
+}
+
+while getopts ":u:h" opt; do
+ case $opt in
+  u)
+    NETWORK_HOST_USERNAME=$OPTARG
+    ;;
+  h)
+    help
+    ;;
   esac
 done
 
-[ $NETWORK_HOST_USERNAME ] || die ${LINENO} "critical error" "No network user provided."
+[ $NETWORK_HOST_USERNAME ] || die ${LINENO} "critical error" "No network user provided. E.g., -u username"
 
 # Mediacommons main site and channel sites
 ALL_SITES=( mediacommons alt-ac fieldguide imr intransition tne )

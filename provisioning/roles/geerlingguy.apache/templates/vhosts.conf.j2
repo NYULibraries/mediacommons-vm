@@ -15,36 +15,54 @@
     AllowOverride All
     Options -Indexes +FollowSymLinks
     Require all granted
+    <IfModule mod_rewrite.c>
+      RewriteBase /
+    </IfModule>    
   </Directory>
   
   <Directory "/var/www/drupalvm/builds/fieldguide">
     AllowOverride All
     Options -Indexes +FollowSymLinks
     Require all granted
+    <IfModule mod_rewrite.c>
+      RewriteBase /fieldguide
+    </IfModule>    
   </Directory>
   
   <Directory "/var/www/drupalvm/builds/imr">
     AllowOverride All
     Options -Indexes +FollowSymLinks
     Require all granted
+    <IfModule mod_rewrite.c>
+      RewriteBase /imr
+    </IfModule>    
   </Directory>
   
   <Directory "/var/www/drupalvm/builds/intransition">
     AllowOverride All
     Options -Indexes +FollowSymLinks
     Require all granted
+    <IfModule mod_rewrite.c>
+      RewriteBase /intransition
+    </IfModule>    
   </Directory>
   
   <Directory "/var/www/drupalvm/builds/tne">
     AllowOverride All
     Options -Indexes +FollowSymLinks
     Require all granted
+    <IfModule mod_rewrite.c>
+      RewriteBase /tne
+    </IfModule>
   </Directory>
   
-  <Directory "/var/www/drupalvm/builds/mediacommons">
+  <Directory "/var/www/drupalvm/builds/alt-ac">
     AllowOverride All
     Options -Indexes +FollowSymLinks
     Require all granted
+    <IfModule mod_rewrite.c>
+      RewriteBase /alt-ac
+    </IfModule>    
   </Directory>          
   
   <FilesMatch \.php$>

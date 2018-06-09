@@ -169,16 +169,14 @@ mysql_users:
 # to install *any* extras, set this value to an empty set, e.g. `[]`.
 installed_extras:
   - adminer
-  - drush
   - mailhog
   - solr
   - upload-progress
-  - ruby
   - java
 
 # Add any extra apt or yum packages you would like installed.
-extra_packages:
-  - sqlite
+extra_packages: []
+  # - sqlite
 
 # You can configure almost anything else on the server in the rest of this file.
 extra_security_enabled: false
