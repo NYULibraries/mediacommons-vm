@@ -1,8 +1,4 @@
 #!/bin/bash
-#
-# shell script to run post-provisioning.
-# Vagrant box only for local enviorment
-#
 
 function tell() {
   echo "file: ${0} | line: ${LINENO} | echo: ${1}"
@@ -11,7 +7,7 @@ function tell() {
 function get_repos() {
   echo "Clone MediaCommons repos"
   git clone https://github.com/NYULibraries/mediacommons_core.git ${VAGRANT_DIR}/code/mediacommons_core
-  git clone https://github.com/NYULibraries/mediacommons.git ${VAGRANT_DIR}code/mediacommons
+  git clone https://github.com/NYULibraries/mediacommons.git ${VAGRANT_DIR}/code/mediacommons
   git clone https://github.com/NYULibraries/mediacommons_modules.git ${VAGRANT_DIR}/code/mediacommons_modules
   git clone https://github.com/NYULibraries/mediacommons_umbrella.git ${VAGRANT_DIR}/code/mediacommons_umbrella
   git clone https://github.com/NYULibraries/mediacommons_projects.git ${VAGRANT_DIR}/code/mediacommons_projects
@@ -66,15 +62,6 @@ function configure_solr() {
   sudo service solr restart
 }
 
-function configure_alias() {
-  echo "alias drush=/vagrant/code/mediacommons/bin/drush" >> ~/.bash_aliases
-  echo "alias copy_database_dumps=/vagrant/scripts/copy_database_dumps.sh" >> ~/.bash_aliases
-  echo "alias copy_sites=/vagrant/scripts/copy_sites.sh" >> ~/.bash_aliases
-  echo "alias clean_cache=/vagrant/scripts/clean_cache.sh" >> ~/.bash_aliases  
-  echo "alias solr=/vagrant/scripts/solr.sh" >> ~/.bash_aliases  
-  echo "alias import_database_dump=/vagrant/scripts/import_database_dump.sh" >> ~/.bash_aliases
-}
-
 VAGRANT_DIR=/vagrant
 
 SETUP_COMPLETE_FILE=${VAGRANT_DIR}/scripts/init.out
@@ -96,8 +83,6 @@ if [ ! -e "$SETUP_COMPLETE_FILE" ]; then
   create_mycnf
 
   configure_solr
-
-  configure_alias
 
   sudo apachectl restart
 

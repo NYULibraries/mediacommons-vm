@@ -29,6 +29,8 @@ done
 
 [ $NETWORK_HOST_USERNAME ] || die ${LINENO} "critical error" "No network user provided. E.g., -u username"
 
+/vagrant/scripts/configure_alias.sh
+
 /vagrant/scripts/copy_database_dumps.sh -u ${NETWORK_HOST_USERNAME}
 
 /vagrant/scripts/import_database_dump.sh
