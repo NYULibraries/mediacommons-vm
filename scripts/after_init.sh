@@ -35,7 +35,7 @@ done
 
 /vagrant/scripts/import_database_dump.sh
 
-/vagrant/scripts/copy_site.sh -u ${NETWORK_HOST_USERNAME}
+/vagrant/scripts/copy_sites.sh -u ${NETWORK_HOST_USERNAME}
 
 /vagrant/scripts/clean_cache.sh
 
