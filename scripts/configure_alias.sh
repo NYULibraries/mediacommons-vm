@@ -9,8 +9,16 @@ function configure_alias() {
   echo "alias import_database_dump=/vagrant/scripts/import_database_dump.sh" >> ~/.bash_aliases
 }
 
-touch ~/.bash_aliases
+SETUP_COMPLETE_FILE=${VAGRANT_DIR}/scripts/configure_alias.out
 
-configure_alias
+if [ ! -e "$SETUP_COMPLETE_FILE" ]; then
 
-exit 0
+  touch ~/.bash_aliases
+
+  configure_alias
+
+  echo `date +"%m-%d-%Y at %r"` >> ${SETUP_COMPLETE_FILE}  
+
+else
+  exit 0
+fi
