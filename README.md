@@ -4,13 +4,13 @@ Mediacommons VM is a VM for Mediacommons's Drupal 7, built with Ansible. This pr
 
 In order to use Mediacommons VM, you need [Vagrant](https://www.vagrantup.com), [Ansible](https://ansible.com) and [VirtualBox](https://www.virtualbox.org).
 
-For installation information and download requiements, see:
+For installation information and download requirements, see:
 
  - https://www.virtualbox.org/wiki/Downloads
  - https://www.vagrantup.com/downloads.html
  - https://docs.ansible.com/ansible/2.3/intro_installation.html
 
-To speed up the process of bulding the VM please install the plugins:
+To speed up the build process, install the plugins:
 
 - [vagrant-vbguest](https://github.com/dotless-de/vagrant-vbguest) - Automatically installs the host's VirtualBox Guest Additions on the guest system.
 
@@ -107,7 +107,7 @@ If you see that messages, we `successfully build the new machine` and `all the c
 
 Note: *Sites are not ready to see yet.*
 
-3. SSH into your newly builid Mediacommons VM
+3. SSH into Mediacommons VM
 
 ```bash
 $ vagrant ssh
@@ -115,7 +115,7 @@ $ vagrant ssh
 
 Note: * In the Terminal in the same folder that has the Vagrantfile*
 
-4. Once inside Mediacommons VM, run after_init.sh. after_init.sh will copy over databases, sites files directory and other assest to complete the intallation process.
+4. Once inside Mediacommons VM, run after_init.sh. after_init.sh will copy over databases, sites files directory and other assets to complete the installation process.
 
 ```bash
 $ cd /vagrant/scripts && ./after_init.sh -u your_username
@@ -123,7 +123,7 @@ $ cd /vagrant/scripts && ./after_init.sh -u your_username
 
 Note: *your_user_name is the username you use to access `bastion` (please contact me for more information if needed)*
 
-Note: *First install needs full involvemet. Actions and input requiered. This process will take time and will ask your input multiple times. You need to responce in timely fashion or the procces will timeout and the build will have multiple erros.*
+Note: *First install needs full involvement. Actions and input required. This process will take time and will ask your input multiple times. You need to respond in timely fashion or the process will timeout and the build will have multiple errors.*
 
 ### 3 - Access the VM.
 
@@ -177,7 +177,7 @@ $ vagrant halt
 4. I can't get the machine to start. "An action 'up' was attempted on the machine 'mediacommons',
 but another process is already executing an action on the machine."
 
- - This is not error realted to MediaCommons VM. The problem is with the host machine. You need to find the process pid and kill it.
+ - This is not error related to MediaCommons VM. The problem is with the host machine. You need to find the process pid and kill it.
  
 ```bash
 $ ps aux | grep vagrant # (or `ps aux | grep ruby`)
@@ -206,7 +206,7 @@ $ vagrant destroy
 it completely gives up the ghost.
 - This is a "known issue". You need to reset your network. Please read [Vagrant box not reachable after VPN connection](https://stackoverflow.com/questions/24281008/vagrant-box-not-reachable-after-vpn-connection)
 
-After you desteroy the machine remove MediaCommons VM (do not leave anything behind), clone the project again and repeat the instruction from `Quick Start Guide` in this README.md file.
+After you `destroy` the machine remove MediaCommons VM (do not leave anything behind), clone the project again and repeat the instruction from `Quick Start Guide` in this README.md file.
 
 ## About the project
 
