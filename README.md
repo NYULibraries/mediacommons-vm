@@ -121,7 +121,7 @@ Note: * In the Terminal in the same folder that has the Vagrantfile*
 $ cd /vagrant/scripts && ./after_init.sh -u your_username
 ```
 
-Note: *your_user_name is the username you use to access `bastion` (please contactbme for more information if needed)*
+Note: *your_user_name is the username you use to access `bastion` (please contact me for more information if needed)*
 
 Note: *First install needs full involvemet. Actions and input requiered. This process will take time and will ask your input multiple times. You need to responce in timely fashion or the procces will timeout and the build will have multiple erros.*
 
