@@ -140,7 +140,41 @@ Note: *First install needs full involvemet. Actions and input requiered. This pr
 
 ## Questions and others
 
-1. I can't get the machine to start. "An action 'up' was attempted on the machine 'mediacommons',
+1. How do I start up MediaCommons VM?
+
+- Open your Terminal and in the same folder that has the `Vagrantfile` and type:
+
+```bash
+$ vagrant up
+```
+
+2. How do I check if MediaCommons VM is running?
+
+- Open your Terminal and in the same folder that has the `Vagrantfile` and type:
+
+```bash
+ vagrant status
+```
+
+You should see a message like:
+
+```bash
+Current machine states:
+
+mediacommons              running (virtualbox)
+```
+
+Note: *If MediaCommons VM is not running see "How do I start up MediaCommons VM?"*
+
+3. How do I power off MediaCommons VM?
+
+- Open your Terminal and in the same folder that has the `Vagrantfile` and type:
+
+```bash
+ vagrant halt
+```
+
+4. I can't get the machine to start. "An action 'up' was attempted on the machine 'mediacommons',
 but another process is already executing an action on the machine."
 
  - This is not error realted to MediaCommons VM. The problem is with the host machine. You need to find the process pid and kill it.
@@ -150,9 +184,9 @@ $ ps aux | grep vagrant # (or `ps aux | grep ruby`)
 $ kill -9 $PID
 ```
 
-2. Should I assume my vagrant login is the same as as my login to my local machine? 
+4. Should I assume my vagrant login is the same as as my login to my local machine? 
 
-- No. To login to MediaCommons VM. MakeOpen your Terminal and in the same folder that has the `Vagrantfile` type.
+- No. To login to MediaCommons VM, open your Terminal and in the same folder that has the `Vagrantfile` type:
 
 ```bash
 $ vagrant ssh
@@ -160,7 +194,19 @@ $ vagrant ssh
 
 Note: *Make sure MediaCommons VM it's already up before you try to login*
 
+5. Things are not working, can I start all over again?
 
+- Yes. Make sure you `destroy` the current MediaCommons VM. Open your Terminal and in the same folder that has the `Vagrantfile` type:
+
+```bash
+$ vagrant destroy
+```
+
+6. It seems to me that my MC vagrant works smoothly until I try to connect to VPN and then
+it completely gives up the ghost.
+- This is a "known issue". You need to reset your network. Please read [Vagrant box not reachable after VPN connection](https://stackoverflow.com/questions/24281008/vagrant-box-not-reachable-after-vpn-connection)
+
+After you desteroy the machine remove MediaCommons VM (do not leave anything behind), clone the project again and repeat the instruction from `Quick Start Guide` in this README.md file.
 
 ## About the project
 
