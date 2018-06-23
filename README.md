@@ -153,7 +153,7 @@ $ vagrant up
 - Open your Terminal and in the same folder that has the `Vagrantfile` and type:
 
 ```bash
- vagrant status
+$ vagrant status
 ```
 
 You should see a message like:
@@ -171,7 +171,7 @@ Note: *If MediaCommons VM is not running see "How do I start up MediaCommons VM?
 - Open your Terminal and in the same folder that has the `Vagrantfile` and type:
 
 ```bash
- vagrant halt
+$ vagrant halt
 ```
 
 4. I can't get the machine to start. "An action 'up' was attempted on the machine 'mediacommons',
