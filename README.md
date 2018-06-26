@@ -159,6 +159,10 @@ Note: *First install needs full involvement. Actions and input required. This pr
 - [Building a Drupal site with Git](https://www.drupal.org/node/803746) as an example of future workflow for our Drupal 7 sites.
 - Also for reference [Git documentation](https://www.drupal.org/documentation/git)
 
+## Contributing
+
+If you are interested in fixing issues and contributing directly to the code base, please see the document [CONTRIBUTING.md](https://github.com/NYULibraries/mediacommons-vm/blob/master/CONTRIBUTING.md)
+
 ## Questions and others
 
 1. How do I start up MediaCommons VM?
