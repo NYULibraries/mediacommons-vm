@@ -37,7 +37,20 @@ Mediacommons VM will install the following on an Ubuntu 16.04 linux VM:
 - SQLite
 - MailHog
 
-After provisioning the VM all Mediacommons related code will live inside `code` directory and all `MediaCommons projects (sites)` inside `builds` directory in the same folder that has the `Vagrantfile`. 
+After provisioning the VM all Mediacommons related code will live inside `code` directory and all `MediaCommons projects (sites)` inside `builds` directory in the same folder that has the `Vagrantfile`.
+
+# Mediacommons projects provided by Mediacommons VM
+
+Each project has its own source-code repository:
+
+- [MediaCommons VM](https://github.com/NYULibraries/mediacommons-vm) a virtual machine built
+with Ansible (based on Drupal VM)
+- [MediaCommons Core](https://github.com/NYULibraries/mediacommons_core.git) - Drupal core files and 3rd party modules, themes and libraries
+- [MediaCommons](https://github.com/NYULibraries/mediacommons.git) - MediaCommons build and migration scripts
+- [MediaCommons Umbrella](https://github.com/NYULibraries/mediacommons_umbrella.git) - MediaCommons Umbrella install profile
+- [https://github.com/NYULibraries/mediacommons_projects](https://github.com/NYULibraries/mediacommons_projects.git) - MediaCommons Projects install profiles
+- [MediaCommons theme](https://github.com/NYULibraries/mediacommons_theme) - MediaCommons theme
+- [MediaCommons admin](https://github.com/NYULibraries/mediacommons_admin.git) - Admin theme for MediaCommons
 
 ## Example of MediaCommons VM directory structure after provisioned
 
@@ -64,6 +77,14 @@ After provisioning the VM all Mediacommons related code will live inside `code` 
 |-- provisioning
 |-- README.md
 |-- scripts
+|   |-- after_init.sh
+|   |-- clean_cache.sh
+|   |-- configure_alias.sh
+|   |-- copy_database_dumps.sh
+|   |-- copy_sites.sh
+|   |-- import_database_dump.sh
+|   |-- init.sh
+|   |-- solr.sh
 `-- Vagrantfile
 ```
 
