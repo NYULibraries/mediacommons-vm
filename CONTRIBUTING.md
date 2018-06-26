@@ -26,6 +26,8 @@ that code up through Development, Staging and Production environments.
 At the moment [MediaCommons development 
 environment](http://dev.mediacommons.org/)
 
+... more to come
+
 ## Branching
 
 Our Git flow is a simplifed [Git-Flow](http://nvie.com/posts/a-successful-git-branching-model/). Much like Git-Flow, we take advantage of a master branch, a development branch, and feature branches.
@@ -93,3 +95,5 @@ $ git pull [--rebase] upstream development
 ## Pull requests
 
 Pull requests should remain focused in scope and avoid containing unrelated commits.
+
+... more to come
