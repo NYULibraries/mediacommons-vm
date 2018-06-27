@@ -12,21 +12,16 @@ with Ansible (based on Drupal VM)
 - [MediaCommons theme](https://github.com/NYULibraries/mediacommons_theme) - MediaCommons theme
 - [MediaCommons admin](https://github.com/NYULibraries/mediacommons_admin.git) - Admin theme for MediaCommons
 
-# Introduction
-
-This document is intended to outline a basic process of using Git in the context of 
-MediaCommons site building, testing and deployment process.
-
-This documentation assumes that the project will be following a basic 4-tier development 
-environment model: developers work on most code locally using MediaCommons VM, then push
-that code up through Development, Staging and Production environments.
-
 ## MediaCommons development server
 
-At the moment [MediaCommons development 
-environment](http://dev.mediacommons.org/)
+Everyday at midnight all the MediaCommons projects in [development server](http://dev.mediacommons.org/) are build from source using development branch. This process will continue until launch. Once MediaCommons is in production mode, this strategy will change.
 
-... more to come
+# Introduction
+
+This document is intended to outline a basic process of using Git in the context of MediaCommons site building, testing and deployment process.
+
+This documentation assumes that the project will be following a basic 4-tier development environment model: developers work on most code locally using MediaCommons VM, then push
+that code up through Development, Staging and Production environments.
 
 ## Branching
 
@@ -36,15 +31,15 @@ Our Git flow is a simplifed [Git-Flow](http://nvie.com/posts/a-successful-git-br
 
 This branch remains readily deployable at all times. It has no end to it's lifespan and only heavily tested code (or no code at all) is allowed in this exclusive branch.
 
-### The Development Branch
+### The development branch
 
 This branch is where all ongoing work is done. It runs parallel to master, and incorporates all bugfixes and features. When the head of the development branch is tested and meets our coding requirements (to be discussed later), it graduates and gets merged to master via pull request.
 
-### Feature Branches
+### Feature branches
 
 Feature branches branch off of development and must be merged back into development. A feature branch adds end-user functionality to the application. When working on a feature branch, it is important to only make changes that are relevant to the feature you are currently working on. Thus the lifespan of the feature branch is limited to the development of that feature. As a convention, we prefix feature branch names with ```feature/```, e.g., ```feature/add-foo```.
 
-### Chore Branches
+### Chore branches
 
 Chore branches branch off of development and must be merged back into development. A chore branch does not add end-user functionality, but is used for housekeeping tasks, e.g., updating a configuration file. When working on a chore branch, it is important to only make changes that are relevant to the chore you are currently working on. Thus the lifespan of the chore branch is limited to the completion of the chore. As a convention, we prefix chore branch names with ```chore/```, e.g., ```chore/update-database-config```.
 

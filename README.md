@@ -88,6 +88,15 @@ with Ansible (based on Drupal VM)
 `-- Vagrantfile
 ```
 
+NOTE: *`Source code is available in the host machine`. You have easy access to read and write using your preferred editor. There is `no need to SSH to MediaCommons VM` in order to modify source code.*
+
+NOTE: *Repositories are link to each build (site) for easy development. See:*
+
+```
+$ cd /vagrant/builds/mediacommons/sites/all/modules && ls -al | grep mediacommons
+lrwxrwxrwx  1 501 dialout   34 Jun 12 14:35 mediacommons_modules -> /vagrant/code/mediacommons_modules
+```
+
 ## Quick Start Guide
 
 This Quick Start Guide will help you quickly build all MediaCommons projects on the VM using a post provision script.
@@ -146,7 +155,13 @@ Note: *your_user_name is the username you use to access `bastion` (please contac
 
 Note: *First install needs full involvement. Actions and input required. This process will take time and will ask your input multiple times. You need to respond in timely fashion or the process will timeout and the build will have multiple errors.*
 
-### 3 - Access the VM.
+### 3 - Access the VM and tools
+
+To login to MediaCommons VM, open your Terminal and in the same folder that has the `Vagrantfile` type:
+
+```bash
+$ vagrant ssh
+```
 
 ## Other Notes
 
@@ -162,6 +177,19 @@ Note: *First install needs full involvement. Actions and input required. This pr
 ## Contributing
 
 If you are interested in fixing issues and contributing directly to the code base, please see the document [CONTRIBUTING.md](https://github.com/NYULibraries/mediacommons-vm/blob/master/CONTRIBUTING.md)
+
+
+## Quick internal links
+
+- [Mediacommons](http://mediacommons.local/)
+- [Fieldguide](http://mediacommons.local/fieldguide)
+- [#alt-academy: Alternative Academic Careers](http://mediacommons.local/alt-ac)
+- [In Media Res](http://mediacommons.local/imr)
+- [The New Everyday](http://mediacommons.local/tne)
+- [MediaCommons VM dashboard](http://dashboard.mediacommons.local/)
+- [Adminer](http://mediacommons.local:8025/)
+- [MailHog](http://mediacommons.local:8025/)
+- [Apache Solr](http://mediacommons.local:8983/solr/#/)
 
 ## Questions and others
 
