@@ -17,6 +17,9 @@ ALL_SITES=( mediacommons alt-ac fieldguide imr intransition tne )
 
 import_database_dump
 
+# Clean cache
+/vagrant/scripts/clean_cache.sh
+
 echo Completed: `date +"%m-%d-%Y at %r"`
 
 exit 0
