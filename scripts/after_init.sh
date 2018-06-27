@@ -37,8 +37,6 @@ done
 
 /vagrant/scripts/import_database_dump.sh
 
-/vagrant/scripts/clean_cache.sh
-
 /vagrant/scripts/solr.sh
 
 echo Completed: `date +"%m-%d-%Y at %r"`
