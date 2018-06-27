@@ -90,7 +90,7 @@ with Ansible (based on Drupal VM)
 
 NOTE: *`Source code is available in the host machine`. You have easy access to read and write using your preferred editor. There is `no need to SSH to MediaCommons VM` in order to modify source code.*
 
-NOTE: *Repositories are link to each build (site) for easy development. See:*
+NOTE: *Repositories are link to each build for easy development. See:*
 
 ```
 $ cd /vagrant/builds/mediacommons/sites/all/modules && ls -al | grep mediacommons
@@ -112,6 +112,8 @@ Download and install [Vagrant](https://www.vagrantup.com/downloads.html), [Virtu
 ```bash
 $ git clone https://github.com/NYULibraries/mediacommons-vm.git
 ```
+
+Note: *This process it is involved and require user input. Script will fail with timeout error if user fail to interact in timely fashion. If timeout, you need to run this script again.*
 
 2. Build the machine using Vagrant
 
@@ -153,7 +155,7 @@ $ cd /vagrant/scripts && ./after_init.sh -u your_username
 
 Note: *your_user_name is the username you use to access `bastion` (please contact me for more information if needed)*
 
-Note: *First install needs full involvement. Actions and input required. This process will take time and will ask your input multiple times. You need to respond in timely fashion or the process will timeout and the build will have multiple errors.*
+Note: *First install needs `full involvement`. `Actions and input required`. This process will take time and will ask your input multiple times. You need to `respond in timely fashion` or the process will timeout and the build will have multiple errors.*
 
 ### 3 - Access the VM and tools
 
@@ -163,18 +165,53 @@ To login to MediaCommons VM, open your Terminal and in the same folder that has 
 $ vagrant ssh
 ```
 
+Once inside MediaCommons VM, MediaCommons VM provide a set of bash scripts to help with local development.
+
+1. Synchronise MediaCommons VM (`site` directory including `files`) with development server.
+
+```bash
+$ /vagrant/scripts/copy_sites.sh -u [username]
+```
+
+NOTE: *This process it is `involved and require user input`. Script will fail with `timeout error if user fail to interact in timely fashion`.*
+
+2. Copy database dumps from development server. The script copy over the most current version of database from development server.
+
+```bash
+$ /vagrant/scripts/copy_database_dumps.sh -u [username]
+``` 
+
+NOTE: *This process `require user input`.*
+
+NOTE: *databases dump will be copy over inside directory `/vagrant/data/databases`. Database dumps are also available in the host machine inside the directory `data/databases` in the same folder that has the `Vagrantfile`.*
+
+3. Import local database dumps (copies from development server located inside `/vagrant/data/databases`), clean sites cache and run cron jobs.
+
+```bash
+$ /vagrant/scripts/copy_database_dumps.sh
+```
+
+NOTE: *If you need to update the databases dump, run first `copy_database_dumps.sh` script to grab the latest copies in the development server..*
+
+4. Clean all projects cache and run cron jobs.
+
+```bash
+$ /vagrant/scripts/clean_cache.sh
+```
+
+5. Mark content to be index and index content from all the sites in the project.
+
+```bash
+$ /vagrant/scripts/solr.sh
+```
+
 ## Other Notes
 
   - To shut down the virtual machine, enter `vagrant halt` in the Terminal in the same folder that has the `Vagrantfile`. To destroy it completely (if you want to save a little disk space, or want to rebuild it from scratch with `vagrant up` again), type in `vagrant destroy`.
   - To log into the virtual machine, enter `vagrant ssh`. You can also get the machine's SSH connection details with `vagrant ssh-config`.
   - When you rebuild the VM (e.g. `vagrant destroy` and then another `vagrant up`), make sure you clear out the contents of the `drupal` folder on your host machine, or Drupal will return some errors when the VM is rebuilt (it won't reinstall Drupal cleanly).
 
-## Development workflow
-
-- [Building a Drupal site with Git](https://www.drupal.org/node/803746) as an example of future workflow for our Drupal 7 sites.
-- Also for reference [Git documentation](https://www.drupal.org/documentation/git)
-
-## Contributing
+## Development workflow and contributing
 
 If you are interested in fixing issues and contributing directly to the code base, please see the document [CONTRIBUTING.md](https://github.com/NYULibraries/mediacommons-vm/blob/master/CONTRIBUTING.md)
 

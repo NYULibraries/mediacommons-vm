@@ -92,3 +92,7 @@ $ git pull [--rebase] upstream development
 Pull requests should remain focused in scope and avoid containing unrelated commits.
 
 ... more to come
+
+## Test
+
+Looking into using [Nightwatch](https://github.com/nightwatchjs/nightwatch) - Automated testing framework powered by [Node.js](https://nodejs.org/en/) and using [W3C Webdriver](https://saucelabs.com/products/open-source-frameworks/selenium/w3c-webdriver-protocol) (formerly Selenium).
