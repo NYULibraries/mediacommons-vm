@@ -64,7 +64,7 @@ drush_make_options: "--no-gitinfofile"
 # composer based site deployment strategy.
 drupal_build_composer: false
 drupal_composer_path: "{{ config_dir }}/drupal.composer.json"
-drupal_composer_install_dir: "/var/www/drupalvm/drupal"
+drupal_composer_install_dir: "/var/www/drupalvm/builds"
 drupal_composer_dependencies:
   - "drupal/devel:1.x-dev"
 
@@ -79,7 +79,7 @@ drupal_composer_project_options: "--prefer-dist --stability dev --no-interaction
 drupal_install_site: false
 
 # Required Drupal settings.
-drupal_core_path: "{{ drupal_composer_install_dir }}/web"
+drupal_core_path: "{{ drupal_composer_install_dir }}"
 drupal_core_owner: "{{ drupalvm_user }}"
 drupal_db_user: drupal
 drupal_db_password: drupal
@@ -124,24 +124,31 @@ apache_vhosts:
   - servername: "{{ drupal_domain }}"
     serveralias: "www.{{ drupal_domain }}"
     documentroot: "{{ drupal_core_path }}"
+    aliases: 
+      - { files: "/www/sites/mediacommons/builds/alt-ac/sites/default/files", base: "/alt-ac", directory: "/var/www/drupalvm/builds/alt-ac" }
+      - { files: "/www/sites/mediacommons/builds/imr/sites/default/files", base: "/imr", directory: "/var/www/drupalvm/builds/imr" }
+      - { files: "/www/sites/mediacommons/builds/fieldguide/sites/default/files", base: "/fieldguide", directory: "/var/www/drupalvm/builds/fieldguide" }
+      - { files: "/www/sites/mediacommons/builds/intransition/sites/default/files", base: "/intransition", directory: "/var/www/drupalvm/builds/intransition" }
+      - { files: "/www/sites/mediacommons/builds/tne/sites/default/files", base: "/tne", directory: "/var/www/drupalvm/builds/tne" }
+      - { files: "/www/sites/mediacommons/builds/mediacommons/sites/default/files", base: "/", directory: "/var/www/drupalvm/builds/mediacommons/" }    
     extra_parameters: "{{ apache_vhost_php_fpm_parameters }}"
 
-  - servername: "adminer.{{ vagrant_hostname }}"
-    documentroot: "{{ adminer_install_dir }}"
-    extra_parameters: "{{ apache_vhost_php_fpm_parameters }}"
+  # - servername: "adminer.{{ vagrant_hostname }}"
+  #   documentroot: "{{ adminer_install_dir }}"
+  #   extra_parameters: "{{ apache_vhost_php_fpm_parameters }}"
 
-  - servername: "xhprof.{{ vagrant_hostname }}"
-    documentroot: "{{ php_xhprof_html_dir }}"
-    extra_parameters: "{{ apache_vhost_php_fpm_parameters }}"
+  # - servername: "xhprof.{{ vagrant_hostname }}"
+  #   documentroot: "{{ php_xhprof_html_dir }}"
+  #   extra_parameters: "{{ apache_vhost_php_fpm_parameters }}"
 
   # - servername: "pimpmylog.{{ vagrant_hostname }}"
   #   documentroot: "{{ pimpmylog_install_dir }}"
   #   extra_parameters: "{{ apache_vhost_php_fpm_parameters }}"
 
-  - servername: "{{ vagrant_ip }}"
-    serveralias: "dashboard.{{ vagrant_hostname }}"
-    documentroot: "{{ dashboard_install_dir }}"
-    extra_parameters: "{{ apache_vhost_php_fpm_parameters }}"
+  # - servername: "{{ vagrant_ip }}"
+  #   serveralias: "dashboard.{{ vagrant_hostname }}"
+  #   documentroot: "{{ dashboard_install_dir }}"
+  #   extra_parameters: "{{ apache_vhost_php_fpm_parameters }}"
 
 apache_packages_state: latest
 apache_remove_default_vhost: true
