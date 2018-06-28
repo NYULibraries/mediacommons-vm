@@ -1,103 +1,71 @@
 {{ apache_global_vhost_settings }}
 
-{# Set up VirtualHosts #}
-
+{% for vhost in apache_vhosts %}
 <VirtualHost {{ apache_listen_ip }}:{{ apache_listen_port }}>
   ServerName {{ vhost.servername }}
-{% if vhost.serveralias is defined %}
+  {% if vhost.serveralias is defined %}
   ServerAlias {{ vhost.serveralias }}
-{% endif %}
-{% if vhost.documentroot is defined %}
+  {% endif %}
+  {% if vhost.documentroot is defined %}
   DocumentRoot "{{ vhost.documentroot }}"
-{% endif %}
-
-{% if vhost.serveradmin is defined %}
-  ServerAdmin {{ vhost.serveradmin }}
-{% endif %}
-{% if vhost.documentroot is defined %}
-  <Directory "{{ vhost.documentroot }}">
-    AllowOverride {{ vhost.allow_override | default(apache_allow_override) }}
-    Options {{ vhost.options | default(apache_options) }}
-{% if apache_vhosts_version == "2.2" %}
-    Order allow,deny
-    Allow from all
-{% else %}
-    Require all granted
-{% endif %}
-  </Directory>
-{% endif %}
-{% if vhost.extra_parameters is defined %}
-  {{ vhost.extra_parameters }}
-{% endif %}
+  {% endif %}
+  {% if vhost.aliases is defined %}
+    {% for alias in vhost.aliases %}
+    Alias {{ alias.base }} {{ alias.directory }}
+    {% endfor %}
+    <Directory "{{ vhost.documentroot }}">
+      AllowOverride none
+      Require all granted
+    </Directory>
+    {% for alias in vhost.aliases %}
+    <Directory {{ alias.directory }}>
+      Include /etc/apache2/conf-available/drupal-main-htaccess.conf
+      # Various rewrite rules.
+      <IfModule mod_rewrite.c>
+        RewriteEngine on
+        RewriteBase {{ alias.base }}
+        RewriteCond %{REQUEST_FILENAME} !-f
+        RewriteCond %{REQUEST_FILENAME} !-d
+        RewriteCond %{REQUEST_URI} !=/favicon.ico
+        RewriteRule ^(.*)$ index.php?q=$1 [L,QSA]
+      </IfModule>
+    </Directory>
+    {% endfor %}
+    {% for alias in vhost.aliases %}
+    <Directory {{ alias.files }}>
+      Include /etc/apache2/conf-available/drupal-files-htaccess.conf
+    </Directory>
+    {% endfor %}
+  {% endif %}
+  {% if vhost.extra_parameters is defined %}
+    {{ vhost.extra_parameters }}
+  {% endif %}
 </VirtualHost>
+{% endfor %}
 
 <VirtualHost *:80>
-  ServerName mediacommons.local
-  ServerAlias www.mediacommons.local
-  DocumentRoot "/var/www/drupalvm/builds"
-  Alias /alt-ac       /var/www/drupalvm/builds/alt-ac
-  Alias /fieldguide   /var/www/drupalvm/builds/fieldguide
-  Alias /imr          /var/www/drupalvm/builds/imr
-  Alias /intransition /var/www/drupalvm/builds/intransition
-  Alias /tne          /var/www/drupalvm/builds/tne
-  Alias /             /var/www/drupalvm/builds/mediacommons/
-  
-  <Directory "/var/www/drupalvm/builds/mediacommons">
+  ServerName adminer.mediacommons.local
+  DocumentRoot "/opt/adminer"
+  <Directory "/opt/adminer">
     AllowOverride All
     Options -Indexes +FollowSymLinks
     Require all granted
-    <IfModule mod_rewrite.c>
-      RewriteBase /
-    </IfModule>    
   </Directory>
-  
-  <Directory "/var/www/drupalvm/builds/fieldguide">
-    AllowOverride All
-    Options -Indexes +FollowSymLinks
-    Require all granted
-    <IfModule mod_rewrite.c>
-      RewriteBase /fieldguide
-    </IfModule>    
-  </Directory>
-  
-  <Directory "/var/www/drupalvm/builds/imr">
-    AllowOverride All
-    Options -Indexes +FollowSymLinks
-    Require all granted
-    <IfModule mod_rewrite.c>
-      RewriteBase /imr
-    </IfModule>    
-  </Directory>
-  
-  <Directory "/var/www/drupalvm/builds/intransition">
-    AllowOverride All
-    Options -Indexes +FollowSymLinks
-    Require all granted
-    <IfModule mod_rewrite.c>
-      RewriteBase /intransition
-    </IfModule>    
-  </Directory>
-  
-  <Directory "/var/www/drupalvm/builds/tne">
-    AllowOverride All
-    Options -Indexes +FollowSymLinks
-    Require all granted
-    <IfModule mod_rewrite.c>
-      RewriteBase /tne
-    </IfModule>
-  </Directory>
-  
-  <Directory "/var/www/drupalvm/builds/alt-ac">
-    AllowOverride All
-    Options -Indexes +FollowSymLinks
-    Require all granted
-    <IfModule mod_rewrite.c>
-      RewriteBase /alt-ac
-    </IfModule>    
-  </Directory>          
-  
   <FilesMatch \.php$>
     SetHandler "proxy:fcgi://127.0.0.1:9000"
   </FilesMatch>
+</VirtualHost>
 
+<VirtualHost *:80>
+  ServerName 192.168.88.88
+  ServerAlias dashboard.mediacommons.local
+  DocumentRoot "/var/www/dashboard"
+  <Directory "/var/www/dashboard">
+    AllowOverride All
+    Options -Indexes +FollowSymLinks
+    Require all granted
+  </Directory>
+  <FilesMatch \.php$>
+    SetHandler "proxy:fcgi://127.0.0.1:9000"
+  </FilesMatch>
 </VirtualHost>
