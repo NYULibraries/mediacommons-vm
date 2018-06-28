@@ -134,9 +134,9 @@ apache_vhosts:
     documentroot: "{{ php_xhprof_html_dir }}"
     extra_parameters: "{{ apache_vhost_php_fpm_parameters }}"
 
-  # - servername: "pimpmylog.{{ vagrant_hostname }}"
-  #   documentroot: "{{ pimpmylog_install_dir }}"
-  #   extra_parameters: "{{ apache_vhost_php_fpm_parameters }}"
+  - servername: "pimpmylog.{{ vagrant_hostname }}"
+    documentroot: "{{ pimpmylog_install_dir }}"
+    extra_parameters: "{{ apache_vhost_php_fpm_parameters }}"
 
   - servername: "{{ vagrant_ip }}"
     serveralias: "dashboard.{{ vagrant_hostname }}"
