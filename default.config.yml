@@ -125,12 +125,12 @@ apache_vhosts:
     serveralias: "www.{{ drupal_domain }}"
     documentroot: "{{ drupal_core_path }}"
     aliases: 
-      - { files: "/www/sites/mediacommons/builds/alt-ac/sites/default/files", base: "/alt-ac", directory: "/var/www/drupalvm/builds/alt-ac" }
-      - { files: "/www/sites/mediacommons/builds/imr/sites/default/files", base: "/imr", directory: "/var/www/drupalvm/builds/imr" }
-      - { files: "/www/sites/mediacommons/builds/fieldguide/sites/default/files", base: "/fieldguide", directory: "/var/www/drupalvm/builds/fieldguide" }
-      - { files: "/www/sites/mediacommons/builds/intransition/sites/default/files", base: "/intransition", directory: "/var/www/drupalvm/builds/intransition" }
-      - { files: "/www/sites/mediacommons/builds/tne/sites/default/files", base: "/tne", directory: "/var/www/drupalvm/builds/tne" }
-      - { files: "/www/sites/mediacommons/builds/mediacommons/sites/default/files", base: "/", directory: "/var/www/drupalvm/builds/mediacommons/" }    
+      - { files: "/var/www/drupalvm/builds/alt-ac/sites/default/files", base: "/alt-ac", directory: "/var/www/drupalvm/builds/alt-ac" }
+      - { files: "/var/www/drupalvm/builds/imr/sites/default/files", base: "/imr", directory: "/var/www/drupalvm/builds/imr" }
+      - { files: "/var/www/drupalvm/builds/fieldguide/sites/default/files", base: "/fieldguide", directory: "/var/www/drupalvm/builds/fieldguide" }
+      - { files: "/var/www/drupalvm/builds/intransition/sites/default/files", base: "/intransition", directory: "/var/www/drupalvm/builds/intransition" }
+      - { files: "/var/www/drupalvm/builds/tne/sites/default/files", base: "/tne", directory: "/var/www/drupalvm/builds/tne" }
+      - { files: "/var/www/drupalvm/builds/mediacommons/sites/default/files", base: "/", directory: "/var/www/drupalvm/builds/mediacommons/" }
     extra_parameters: "{{ apache_vhost_php_fpm_parameters }}"
 
   # - servername: "adminer.{{ vagrant_hostname }}"
