@@ -1,0 +1,11 @@
+---
+
+- name: Ensure NPM is installed.
+  package:
+    name: "nodejs"
+    state: present
+
+- name: Install Nightwatch package globally.
+  npm:
+    name: nightwatch
+    global: yes
