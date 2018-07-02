@@ -1,0 +1,4 @@
+---
+# handlers file for Xvfb
+- name: restart xvfb
+  service: name=xvfb state=restarted

@@ -1,0 +1,11 @@
+[Unit]
+Description=xvfb
+After=syslog.target network.target
+
+[Service]
+ExecStart=/usr/bin/Xvfb :10 -ac
+Restart=on-failure
+RestartSec=20s
+
+[Install]
+WantedBy=multi-user.target
