@@ -1,0 +1,75 @@
+#!/bin/bash
+#
+# Xvfb
+#
+# chkconfig: 345 90 25
+# description: Xvfb service
+
+# Source function library.
+. /etc/init.d/functions
+
+xvfb_bin=/usr/bin/Xvfb
+
+user=root
+display=":10"
+exec="$xvfb_bin ${display} -ac"
+lockfile="/var/lock/subsys/xvfb"
+pidfile="/root/Xvfb.pid"
+logfile="/var/log/Xvfb.log"
+prog="Xvfb"
+
+RETVAL=0
+
+start() {
+  echo -n $"Starting $prog: "
+
+  touch $pidfile
+  chown $user $pidfile
+
+  touch $logfile
+  chown $user $logfile
+
+  /bin/su - $user -c "DISPLAY=\":$display\" $exec >> $logfile 2>&1 & echo \$! > $pidfile"
+
+  sleep 2
+
+  pgrep -fl $prog
+  RETVAL=$?
+  [ $RETVAL -eq 0 ] && echo_success || echo_failure
+
+  return $RETVAL
+}
+
+stop() {
+  echo -n $"Stopping $prog: "
+  killproc -p $pidfile $prog
+  RETVAL=$?
+  echo
+  [ $RETVAL -eq 0 ] && rm -f $lockfile $pidfile
+  return $RETVAL
+}
+
+restart() {
+  stop
+  sleep 2
+  start
+}
+
+case "$1" in
+  start)
+    start
+    ;;
+  stop)
+    stop
+    ;;
+  status)
+    status -p ${pidfile} ${prog}
+    RETVAL=$?
+    ;;
+  restart)
+    restart
+    ;;
+  *)
+    echo $"Usage: $0 {start|stop|restart}"
+    exit 1
+esac
