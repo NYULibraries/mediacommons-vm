@@ -206,6 +206,32 @@ $ /vagrant/scripts/clean_cache.sh
 $ /vagrant/scripts/solr.sh
 ```
 
+## Updating MediaCommons VM
+
+To update MediaCommons
+
+1) Update [MediaCommons VM](https://github.com/NYULibraries/mediacommons-vm) using Git.
+
+```bash
+$ git pull 
+```
+
+2) Update the virtual machine using provisioners. You can do this by running `vagrant up --provision` in the same folder that has the `Vagrantfile` or `vagrant provision` if the machine is already up.
+
+If the machine is not up:
+
+```bash
+$ vagrant up --provision
+```
+
+If the machine is up:
+
+```bash
+$ vagrant --provision
+```
+
+NOTE: *We used provisioners in Vagrant to automatically install software alter configurations, and more on the machine as part of the vagrant up process.*
+
 ## Development workflow and contributing
 
 If you are interested in fixing issues and contributing directly to the code base, please see the document [CONTRIBUTING.md](https://github.com/NYULibraries/mediacommons-vm/blob/master/CONTRIBUTING.md)
