@@ -30,12 +30,13 @@ Mediacommons VM will install the following on an Ubuntu 16.04 linux VM:
 - PHP 5.6.x
 - MySQL 5.7.x
 - Drush
-- Apache Solr
-- Adminer (Web UI for MySQL)
-- Selenium
-- Ruby
+- Apache Solr 5.5.5
+- Ruby 2.3.1p112
 - SQLite
-- MailHog
+- [Adminer](https://www.adminer.org/)
+- [MailHog](MailHog)
+- [Node.js v8.11.3 LTS](https://nodejs.org/en/)
+- [Nightwatch.js](http://nightwatchjs.org/)
 
 After provisioning the VM all Mediacommons related code will live inside `code` directory and all `MediaCommons projects (sites)` inside `builds` directory in the same folder that has the `Vagrantfile`.
 
@@ -147,7 +148,7 @@ $ vagrant ssh
 
 Note: * In the Terminal in the same folder that has the Vagrantfile*
 
-4. Once inside Mediacommons VM, run after_init.sh. after_init.sh will copy over databases, sites files directory and other assets to complete the installation process.
+4. Once inside Mediacommons VM, run after_init.sh. This script will copy Drupal 7 databases and copy the sites default directory including files directory from MediaCommons development server.
 
 ```bash
 $ cd /vagrant/scripts && ./after_init.sh -u your_username
@@ -205,12 +206,6 @@ $ /vagrant/scripts/clean_cache.sh
 $ /vagrant/scripts/solr.sh
 ```
 
-## Other Notes
-
-  - To shut down the virtual machine, enter `vagrant halt` in the Terminal in the same folder that has the `Vagrantfile`. To destroy it completely (if you want to save a little disk space, or want to rebuild it from scratch with `vagrant up` again), type in `vagrant destroy`.
-  - To log into the virtual machine, enter `vagrant ssh`. You can also get the machine's SSH connection details with `vagrant ssh-config`.
-  - When you rebuild the VM (e.g. `vagrant destroy` and then another `vagrant up`), make sure you clear out the contents of the `drupal` folder on your host machine, or Drupal will return some errors when the VM is rebuilt (it won't reinstall Drupal cleanly).
-
 ## Development workflow and contributing
 
 If you are interested in fixing issues and contributing directly to the code base, please see the document [CONTRIBUTING.md](https://github.com/NYULibraries/mediacommons-vm/blob/master/CONTRIBUTING.md)
@@ -256,7 +251,17 @@ mediacommons              running (virtualbox)
 
 Note: *If MediaCommons VM is not running see "How do I start up MediaCommons VM?"*
 
-3. How do I power off MediaCommons VM?
+3. How do I log into the virtual machine?
+
+- To log into the virtual machine, open your Terminal and in the same folder that has the `Vagrantfile` and type:
+
+```bash
+$ vagrant ssh
+```
+
+NOTE: *You can also get the machine's SSH connection details with `vagrant ssh-config`.*
+
+4. How do I power off MediaCommons VM?
 
 - Open your Terminal and in the same folder that has the `Vagrantfile` and type:
 
@@ -264,7 +269,7 @@ Note: *If MediaCommons VM is not running see "How do I start up MediaCommons VM?
 $ vagrant halt
 ```
 
-4. I can't get the machine to start. "An action 'up' was attempted on the machine 'mediacommons',
+5. I can't get the machine to start. "An action 'up' was attempted on the machine 'mediacommons',
 but another process is already executing an action on the machine."
 
  - This is not error related to MediaCommons VM. The problem is with the host machine. You need to find the process pid and kill it.
@@ -274,7 +279,7 @@ $ ps aux | grep vagrant # (or `ps aux | grep ruby`)
 $ kill -9 $PID
 ```
 
-4. Should I assume my vagrant login is the same as as my login to my local machine? 
+6. Should I assume my vagrant login is the same as as my login to my local machine? 
 
 - No. To login to MediaCommons VM, open your Terminal and in the same folder that has the `Vagrantfile` type:
 
@@ -284,7 +289,9 @@ $ vagrant ssh
 
 Note: *Make sure MediaCommons VM it's already up before you try to login*
 
-5. Things are not working, can I start all over again?
+NOTE: *You can also get the machine's SSH connection details with `vagrant ssh-config`.*
+
+7. Things are not working, can I start all over again?
 
 - Yes. Make sure you `destroy` the current MediaCommons VM. Open your Terminal and in the same folder that has the `Vagrantfile` type:
 
@@ -292,11 +299,11 @@ Note: *Make sure MediaCommons VM it's already up before you try to login*
 $ vagrant destroy
 ```
 
-6. It seems to me that my MC vagrant works smoothly until I try to connect to VPN and then
+NOTE: *After you `destroy` the machine remove MediaCommons VM (do not leave anything behind), clone the project again and repeat the instruction from `Quick Start Guide` in this README.md file.*
+
+8. It seems to me that my MC vagrant works smoothly until I try to connect to VPN and then
 it completely gives up the ghost.
 - This is a "known issue". You need to reset your network. Please read [Vagrant box not reachable after VPN connection](https://stackoverflow.com/questions/24281008/vagrant-box-not-reachable-after-vpn-connection)
-
-After you `destroy` the machine remove MediaCommons VM (do not leave anything behind), clone the project again and repeat the instruction from `Quick Start Guide` in this README.md file.
 
 ## About the project
 
