@@ -9,7 +9,7 @@ function configure_alias() {
   echo "alias import_database_dump=/vagrant/scripts/import_database_dump.sh" >> ~/.bash_aliases
 }
 
-SETUP_COMPLETE_FILE=${VAGRANT_DIR}/scripts/configure_alias.out
+SETUP_COMPLETE_FILE=/vagrant/scripts/configure_alias.out
 
 if [ ! -e "$SETUP_COMPLETE_FILE" ]; then
 
