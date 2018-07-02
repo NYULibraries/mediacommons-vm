@@ -1,6 +1,4 @@
-# Ansible Role: Node.js
-
-Installs Node.js on CentOS 7
+# Ansible Role: X virtual framebuffer
 
 ## Requirements
 
