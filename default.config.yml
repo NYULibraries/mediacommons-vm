@@ -1,8 +1,4 @@
 ---
-# Available `vagrant_box` values include:
-#   - beet/box (pre-provisioned, based on Ubuntu 16.04)
-#   - geerlingguy/centos7
-#   - geerlingguy/centos6
 vagrant_box: geerlingguy/ubuntu1604
 
 vagrant_user: vagrant
