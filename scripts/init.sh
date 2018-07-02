@@ -35,7 +35,6 @@ function copy_sites() {
   for site in ${ALL_SITES[*]}
     do
       cp -r ${VAGRANT_DIR}/code/mediacommons_core/drupal ${VAGRANT_DIR}/builds/${site}
-      mv ${VAGRANT_DIR}/builds/${site}/.htaccess.off ${VAGRANT_DIR}/builds/${site}/.htaccess
   done
 }
 
