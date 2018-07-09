@@ -227,7 +227,7 @@ $ vagrant up --provision
 If the machine is up:
 
 ```bash
-$ vagrant --provision
+$ vagrant provision
 ```
 
 NOTE: *We used provisioners in Vagrant to automatically install software alter configurations, and more on the machine as part of the vagrant up process.*
