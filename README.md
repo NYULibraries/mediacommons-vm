@@ -206,6 +206,12 @@ $ /vagrant/scripts/clean_cache.sh
 $ /vagrant/scripts/solr.sh
 ```
 
+5. Revert all sites features. Useful to use onces a feture was updated/change.
+
+```bash
+$ /vagrant/scripts/features-revert.sh
+```
+
 ## Updating MediaCommons VM
 
 To update MediaCommons
