@@ -1,0 +1,13 @@
+---
+project_db: "2.2"
+project_db_username: "2.2"
+project_db_password: "2.2"
+project_name: "2.2"
+
+projects: 
+  - name: mediacommons
+  - name: alt-ac
+  - name: imr
+  - name: intransition
+  - name: tne
+  - name: fieldguide

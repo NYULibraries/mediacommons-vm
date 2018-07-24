@@ -44,6 +44,7 @@
     - { role: dismorfo.nodejs }    
     - { role: dismorfo.xvfb }
     - { role: dismorfo.nightwatch }
+    - { role: dismorfo.projects }
 
     # Conditionally-installed roles.
     - { role: geerlingguy.memcached, when: '"memcached" in installed_extras' }
