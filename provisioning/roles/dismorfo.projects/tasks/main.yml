@@ -1,0 +1,34 @@
+---
+
+# Include variables and define needed variables.
+- name: Include variables.
+  include_vars: settings.yml
+
+- name: Reset settings.php permissions.
+  become: yes
+  file:
+    path: "{{ item.path }}"
+    mode: 0777
+    recurse: yes
+  with_items:
+    - { path: '/vagrant/builds/alt-ac/sites/default' }
+    - { path: '/vagrant/builds/fieldguide/sites/default' }
+    - { path: '/vagrant/builds/imr/sites/default' }
+    - { path: '/vagrant/builds/intransition/sites/default' }
+    - { path: '/vagrant/builds/mediacommons/sites/default' }
+    - { path: '/vagrant/builds/tne/sites/default' }
+    
+
+- name: Configure MediaCommons' sites settings.php.
+  become: yes
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+  with_items:
+    - { src: 'alt-ac.j2', dest: '/vagrant/builds/alt-ac/sites/default/settings.php' }
+    - { src: 'fieldguide.j2', dest: '/vagrant/builds/fieldguide/sites/default/settings.php' }
+    - { src: 'imr.j2', dest: '/vagrant/builds/imr/sites/default/settings.php' }
+    - { src: 'intransition.j2', dest: '/vagrant/builds/intransition/sites/default/settings.php' }
+    - { src: 'mediacommons.j2', dest: '/vagrant/builds/mediacommons/sites/default/settings.php' }
+    - { src: 'tne.j2', dest: '/vagrant/builds/tne/sites/default/settings.php' }
+  
