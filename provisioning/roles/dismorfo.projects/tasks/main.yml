@@ -18,7 +18,6 @@
     - { path: '/vagrant/builds/mediacommons/sites/default' }
     - { path: '/vagrant/builds/tne/sites/default' }
     
-
 - name: Configure MediaCommons' sites settings.php.
   become: yes
   template:
