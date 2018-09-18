@@ -35,10 +35,18 @@
 # Configure Apache.
 - include_tasks: "configure-{{ ansible_os_family }}.yml"
 
+- name: Creates conf-available directory
+  file:
+    path: /etc/httpd/conf-available
+    state: directory
+    owner: root
+    mode: 0755
+    recurse: yes
+
 - name: Add MediaCommons main htaccess configuration.
   template:
     src: "drupal-main-htaccess.conf.j2"
-    dest: "/etc/apache2/conf-available/drupal-main-htaccess.conf"
+    dest: "/etc/httpd/conf-available/drupal-main-htaccess.conf"
     owner: root
     group: root
     mode: 0644
@@ -47,7 +55,7 @@
 - name: Add MediaCommons files htaccess configuration.
   template:
     src: "drupal-files-htaccess.conf.j2"
-    dest: "/etc/apache2/conf-available/drupal-files-htaccess.conf"
+    dest: "/etc/httpd/conf-available/drupal-files-htaccess.conf"
     owner: root
     group: root
     mode: 0644

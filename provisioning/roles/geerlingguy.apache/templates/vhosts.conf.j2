@@ -19,7 +19,7 @@
     </Directory>
     {% for alias in vhost.aliases %}
     <Directory {{ alias.directory }}>
-      Include /etc/apache2/conf-available/drupal-main-htaccess.conf
+      Include /etc/httpd/conf-available/drupal-main-htaccess.conf
       # Various rewrite rules.
       <IfModule mod_rewrite.c>
         RewriteEngine on
@@ -33,7 +33,7 @@
     {% endfor %}
     {% for alias in vhost.aliases %}
     <Directory {{ alias.files }}>
-      Include /etc/apache2/conf-available/drupal-files-htaccess.conf
+      Include /etc/httpd/conf-available/drupal-files-htaccess.conf
     </Directory>
     {% endfor %}
   {% endif %}
@@ -43,8 +43,8 @@
 </VirtualHost>
 {% endfor %}
 
-<VirtualHost *:80>
-  ServerName adminer.mediacommons.local
+<VirtualHost *:{{ apache_listen_port }}>
+  ServerName adminer.{{ vagrant_hostname }}
   DocumentRoot "/opt/adminer"
   <Directory "/opt/adminer">
     AllowOverride All
@@ -56,11 +56,24 @@
   </FilesMatch>
 </VirtualHost>
 
-<VirtualHost *:80>
-  ServerName 192.168.88.88
-  ServerAlias dashboard.mediacommons.local
+<VirtualHost *:{{ apache_listen_port }}>
+  ServerName dashboard.{{ vagrant_hostname }}
+  ServerAlias dashboard.{{ vagrant_hostname }}
   DocumentRoot "/var/www/dashboard"
   <Directory "/var/www/dashboard">
+    AllowOverride All
+    Options -Indexes +FollowSymLinks
+    Require all granted
+  </Directory>
+  <FilesMatch \.php$>
+    SetHandler "proxy:fcgi://127.0.0.1:9000"
+  </FilesMatch>
+</VirtualHost>
+
+<VirtualHost *:80>
+  ServerName pimpmylog.{{ vagrant_hostname }}
+  DocumentRoot "/usr/share/php/pimpmylog"
+  <Directory "/usr/share/php/pimpmylog">
     AllowOverride All
     Options -Indexes +FollowSymLinks
     Require all granted

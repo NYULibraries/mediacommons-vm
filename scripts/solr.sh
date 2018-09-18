@@ -1,34 +1,50 @@
 #!/bin/bash
 
-die () {
-  echo "file: ${0} | line: ${1} | step: ${2} | message: ${3}";
-  exit 1
-}
+# Defined in ~/.bashrc, but can be overwritten
+# PROJECT=mediacommons
+
+# Defined in ~/.bashrc, but can be overwritten
+# APP_DIR=/vagrant
+
+# Defined in ~/.bashrc, but can be overwritten
+# DRUSH=${APP_DIR}/source/mediacommons/bin/drush-6.7.0/drush
+
+# Defined in ~/.bashrc, but can be overwritten
+# HOST=mediacommons.local
+
+# Defined in ~/.bashrc, but can be overwritten
+# PROTOCOL=http
+
+# Defined in ~/.bashrc, but can be overwritten
+# BUILD_PATH=/var/www/sites/${PROJECT}/builds
+
+# Defined in ~/.bashrc, but can be overwritten
+# SOLR_CORE=http://mediacommons.local:8983/solr/mediacommons
 
 echo "Reset Apache Solr index"
 
-curl "http://mediacommons.local:8983/solr/mediacommons/update?stream.body=<delete><query>*:*</query></delete>&commit=true&wt=json"
+curl "${SOLR_CORE}/update?stream.body=<delete><query>*:*</query></delete>&commit=true&wt=json"
 
 # Mediacommons main site and channel sites
 ALL_SITES=( alt-ac fieldguide imr intransition tne )
 
-/vagrant/code/mediacommons/bin/drush -y solr-mark-all --root=/var/www/drupalvm/builds/mediacommons --uri=http://mediacommons.local
+${DRUSH} -y solr-mark-all --root=${BUILD_PATH}/mediacommons/drupal --uri=${PROTOCOL}://${HOST}
 
-/vagrant/code/mediacommons/bin/drush -y solr-index --root=/var/www/drupalvm/builds/mediacommons --uri=http://mediacommons.local
+${DRUSH} -y solr-index --root=${BUILD_PATH}/mediacommons/drupal --uri=${PROTOCOL}://${HOST}
 
 for site in ${ALL_SITES[*]}
   do
     # Mark all the documents in the site
-    /vagrant/code/mediacommons/bin/drush -y solr-mark-all --root=/var/www/drupalvm/builds/${site} --uri=http://mediacommons.local/${site}
+    ${DRUSH} -y solr-mark-all --root=${BUILD_PATH}/${site}/drupal --uri=${PROTOCOL}://${HOST}/${site}
     # Run index off all documents
-    /vagrant/code/mediacommons/bin/drush -y solr-index --root=/var/www/drupalvm/builds/${site} --uri=http://mediacommons.local/${site}
+    ${DRUSH} -y solr-index --root=${BUILD_PATH}/${site}/drupal --uri=${PROTOCOL}://${HOST}/${site}
 done
 
-/vagrant/code/mediacommons/bin/drush -y solr-metadata --root=${BUILD_APP_ROOT}/builds/mediacommons
+${DRUSH} -y solr-metadata --root=${BUILD_PATH}/mediacommons/drupal
 
 for site in ${ALL_SITES[*]}
   do
-    /vagrant/code/mediacommons/bin/drush -d -y solr-metadata --root=/var/www/drupalvm/builds/${site} --uri=http://mediacommons.local/${site}
+    ${DRUSH} -d -y solr-metadata --root=${BUILD_PATH}/${site}/drupal --uri=${PROTOCOL}://${HOST}/${site}
 done
 
 exit 0

@@ -1,0 +1,15 @@
+function die() {
+  echo "file: ${0} | line: ${1} | step: ${2} | message: ${3}"
+  if [[ -f /tmp/${0}.pid ]]; then
+    rm -f /tmp/${0}.pid
+  fi
+  exit 1
+}
+
+function tell () {
+  echo "file: ${0} | line: ${1} | step: ${2} | command: ${3}"
+}
+
+export -f die
+
+export -f tell

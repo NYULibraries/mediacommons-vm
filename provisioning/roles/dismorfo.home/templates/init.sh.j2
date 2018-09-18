@@ -1,0 +1,96 @@
+#!/bin/bash
+
+function die() {
+  echo "file: ${0} | line: ${1} | step: ${2} | message: ${3}";
+  exit 1
+}
+
+function get_repos() {
+  if sudo test ! -d "${VAGRANT_DIR}/source/mediacommons"; then
+    git clone https://github.com/NYULibraries/mediacommons.git ${VAGRANT_DIR}/source/mediacommons
+  fi
+  if sudo test ! -d "${VAGRANT_DIR}/source/mediacommons_core"; then
+    git clone https://github.com/NYULibraries/mediacommons_core.git ${VAGRANT_DIR}/source/mediacommons_core
+  fi
+  if sudo test ! -d "${VAGRANT_DIR}/source/mediacommons_modules"; then
+    git clone https://github.com/NYULibraries/mediacommons_modules.git ${VAGRANT_DIR}/source/mediacommons_modules
+    git --git-dir=${VAGRANT_DIR}/source/mediacommons_modules/.git --work-tree=${VAGRANT_DIR}/source/mediacommons_modules checkout develop
+    ln -s ${VAGRANT_DIR}/source/mediacommons_modules ${VAGRANT_DIR}/source/mediacommons_core/drupal/sites/all/modules/mediacommons_modules
+  fi
+  if sudo test ! -d "${VAGRANT_DIR}/source/mediacommons_umbrella"; then
+    git clone https://github.com/NYULibraries/mediacommons_umbrella.git ${VAGRANT_DIR}/source/mediacommons_umbrella
+    git --git-dir=${VAGRANT_DIR}/source/mediacommons_umbrella/.git --work-tree=${VAGRANT_DIR}/source/mediacommons_umbrella checkout develop
+    ln -s ${VAGRANT_DIR}/source/mediacommons_umbrella ${VAGRANT_DIR}/source/mediacommons_core/drupal/profiles/mediacommons_umbrella
+  fi
+  if sudo test ! -d "${VAGRANT_DIR}/source/mediacommons_projects"; then
+    git clone https://github.com/NYULibraries/mediacommons_projects.git ${VAGRANT_DIR}/source/mediacommons_projects
+    git --git-dir=${VAGRANT_DIR}/source/mediacommons_projects/.git --work-tree=${VAGRANT_DIR}/source/mediacommons_projects checkout develop
+    ln -s ${VAGRANT_DIR}/source/mediacommons_projects ${VAGRANT_DIR}/source/mediacommons_core/drupal/profiles/mediacommons_projects
+  fi
+  if sudo test ! -d "${VAGRANT_DIR}/source/mediacommons_theme"; then
+    git clone https://github.com/NYULibraries/mediacommons_theme.git ${VAGRANT_DIR}/source/mediacommons_theme
+    git --git-dir=${VAGRANT_DIR}/source/mediacommons_theme/.git --work-tree=${VAGRANT_DIR}/source/mediacommons_theme checkout develop
+    ln -s ${VAGRANT_DIR}/source/mediacommons_theme ${VAGRANT_DIR}/source/mediacommons_core/drupal/sites/all/themes/mediacommons
+  fi
+  if sudo test ! -d "${VAGRANT_DIR}/source/mediacommons_admin"; then
+    git clone https://github.com/NYULibraries/mediacommons_admin.git ${VAGRANT_DIR}/source/mediacommons_admin
+    ln -s ${VAGRANT_DIR}/source/mediacommons_admin ${VAGRANT_DIR}/source/mediacommons_core/drupal/sites/all/themes/mediacommons_admin
+  fi
+}
+
+# Copy sites
+function copy_sites() {
+  for site in ${ALL_SITES[*]}
+    do
+      if sudo test ! -d "${VAGRANT_DIR}/builds/${site}"; then
+        cp -r ${VAGRANT_DIR}/source/mediacommons_core ${VAGRANT_DIR}/builds/${site}
+      fi
+  done
+}
+
+function configure_solr() {
+  # Copy new Solr collection core with the Solr configuration provided by module.
+  sudo su - solr -c "/opt/solr/bin/solr create -c ${SOLR_CORE_NAME} -d ${SOLR_CORE_CONF}"
+  # Adjust the autoCommit time so index changes are committed in 1s.
+  sudo sed -i 's/\(<maxTime>\)\([^<]*\)\(<[^>]*\)/\11000\3/g' ${SOLR_CORE_PATH}/conf/solrconfig.xml
+  # Restart Apache Solr.
+  sudo service solr restart
+}
+
+VAGRANT_DIR=/vagrant
+
+SOLR_CORE_NAME=mediacommons
+
+SOLR_VERSION=solr-5.x
+
+SOLR_CORE_PATH="/var/solr/data/${SOLR_CORE_NAME}"
+
+SOLR_CORE_CONF=${VAGRANT_DIR}/source/mediacommons_core/drupal/sites/all/modules/apachesolr/solr-conf/$SOLR_VERSION/
+
+ALL_SITES=( mediacommons alt-ac fieldguide imr intransition tne )
+
+if sudo test ! -d "${VAGRANT_DIR}/source"; then
+  mkdir -p ${VAGRANT_DIR}/source
+fi 
+
+if sudo test ! -d "${VAGRANT_DIR}/data/databases"; then
+  mkdir -p ${VAGRANT_DIR}/data/databases
+fi
+
+if sudo test ! -d "${VAGRANT_DIR}/builds"; then
+  mkdir -p ${VAGRANT_DIR}/builds
+fi
+
+get_repos
+
+copy_sites
+
+if sudo true; then
+  if sudo test ! -d "${SOLR_CORE_PATH}"; then
+    configure_solr
+  fi
+else
+  echo "SUDO AUTHENTICATION FAILED"
+fi
+
+exit 0

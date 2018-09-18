@@ -3,7 +3,7 @@ dependencies: []
 
 galaxy_info:
   author: dismorfo
-  description: Node.js installation for CentOS 7
+  description: Set Vagrant user variables
   company: "New York University"
   license: "license (BSD, MIT)"
   min_ansible_version: 2.4
@@ -13,8 +13,4 @@ galaxy_info:
         - all
   galaxy_tags:
     - development
-    - web
-    - javascript
-    - js
-    - nodejs
 

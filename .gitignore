@@ -20,4 +20,5 @@ Vagrantfile.local
 /scripts/*.out
 /builds/
 /code/
+/source/
 /data/

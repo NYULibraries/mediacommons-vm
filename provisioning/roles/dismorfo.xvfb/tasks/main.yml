@@ -1,8 +1,8 @@
 ---
 
 - name: Install X virtual framebuffer
-  apt:
-    name: xvfb
+  yum:
+    name: xorg-x11-server-Xvfb
     state: present
 
 - name: Install X virtual framebuffe init script
@@ -25,14 +25,14 @@
   when: "ansible_service_mgr == 'systemd'"
   tags: [configuration, xvfb, xvfb-install]
 
-- name: Register systemd service status (for systemd systems)
-  shell: 'systemctl status xvfb | grep "active (running)"'
-  when: "ansible_service_mgr == 'systemd'"
-  register: xvfb_running
-  ignore_errors: yes
-  changed_when: false
+# - name: Register systemd service status (for systemd systems)
+#   shell: 'systemctl status xvfb | grep "active (running)"'
+#   when: "ansible_service_mgr == 'systemd'"
+#   register: xvfb_running
+#   ignore_errors: yes
+#   changed_when: false
 
-- name: Ensure xvfb is running
-  service: name=xvfb state=started enabled=yes
-  tags: [configuration, xvfb, xvfb-run]
-  when: xvfb_running.failed is defined and xvfb_running.failed == true
+# - name: Ensure xvfb is running
+#   service: name=xvfb state=started enabled=yes
+#   tags: [configuration, xvfb, xvfb-run]
+#   when: xvfb_running.failed is defined and xvfb_running.failed == true

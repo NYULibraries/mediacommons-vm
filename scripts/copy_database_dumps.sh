@@ -1,25 +1,16 @@
 #!/bin/bash
 
-# I need to check the hostname and prevent the user from running the scipt if the user
-# is trying to run the script in a host other that madiacommons.local.
-
 die () {
   echo "file: ${0} | line: ${1} | step: ${2} | message: ${3}"
   exit 1
 }
 
 function copy_database_dumps() {
-  echo "Copy database dumps"
-  # Clear out old dumps.  If this is not done and the rsync fails for some reason,
-  # the sites will be rebuilt with old databases, and this may or may not be
-  # immediately apparent.
-  if [ -z "$(ls -A ${DATABASE_DUMPS})" ]; then
-      echo "Nothing to remove."
-    else
+  if [ ! -z "$(ls -A ${DATABASE_DUMPS})" ]; then
      rm $DATABASE_DUMPS/*.sql
-  fi  
+  fi    
   # To keep things simple, copy all the database dumps.
-  rsync -azvh -e "ssh -o ProxyCommand='ssh -W %h:%p ${NETWORK_HOST_USERNAME}@${BASTION_HOST}'" ${NETWORK_HOST_USERNAME}@${DEV_SERVER}:${DEV_SERVER_DATABASE_DUMPS}/ $DATABASE_DUMPS/
+  rsync -azvh -e "ssh -o ProxyCommand='ssh -W %h:%p ${NETWORK_HOST_USERNAME}@${BASTION_HOST}'" ${NETWORK_HOST_USERNAME}@${SERVER}:${SERVER_DATABASE_DUMPS}/ $DATABASE_DUMPS/
 }
 
 function help() {
@@ -49,13 +40,13 @@ done
 # Bastion server
 BASTION_HOST=b.dlib.nyu.edu
 
-# Development server
-DEV_SERVER=devmc2.dlib.nyu.edu
+# Server
+SERVER=mc2.dlib.nyu.edu
 
 # Directory in development server with copies of devmc database dumps
-DEV_SERVER_DATABASE_DUMPS=/www/sites/mediacommons/lib/dumps
+SERVER_DATABASE_DUMPS=/content/prod/pa/drupal/files/mediacommons/databases
 
-# Directory where storing local copies of devmc database dumps
+# Directory where storing local copies of database dumps
 DATABASE_DUMPS=/vagrant/data/databases
 
 mkdir -p ${DATABASE_DUMPS}

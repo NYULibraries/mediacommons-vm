@@ -33,7 +33,7 @@
 
 - name: Set SSH home directory.
   lineinfile:
-    dest: "/home/{{ drupalvm_user }}/.bashrc"
+    dest: "/home/{{ vagrant_user }}/.bashrc"
     state: present
     create: yes
     regexp: "^SSH_HOME="

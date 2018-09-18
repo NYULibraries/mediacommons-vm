@@ -48,6 +48,31 @@
     php_fpm_conf_path: "{{ __php_fpm_conf_path }}"
   when: php_fpm_conf_path is not defined
 
+- name: Install Extra Packages for Enterprise Linux (EPEL)
+  yum:
+    name: https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+    state: present
+
+- name: Check if RedHat remi-release-7 is installed
+  command: rpm -q remi-release-7.5-2.el7.remi.noarch
+  register: rpm_check
+  failed_when: no
+  changed_when: no
+  ignore_warnings: yes
+
+- name: Download RedHat remi-release-7
+  get_url:
+    url: http://rpms.famillecollet.com/enterprise/remi-release-7.rpm
+    dest: /tmp/remi-release-7.rpm
+    mode: 0775
+  when: rpm_check.rc == 1
+
+- name: Install RedHat remi-release-7
+  command: rpm -Uvh /tmp/remi-release-7.rpm
+  when: (ansible_os_family == 'RedHat') and rpm_check.stdout.find('is not installed') != -1
+  changed_when: False
+  become: yes
+
 # Setup/install tasks.
 - include_tasks: setup-RedHat.yml
   when: (php_install_from_source == false) and (ansible_os_family == 'RedHat')
