@@ -5,26 +5,23 @@ require_relative 'lib/drupalvm/vagrant'
 
 # Absolute paths on the host machine.
 host_drupalvm_dir = File.dirname(File.expand_path(__FILE__))
-host_project_dir = ENV['DRUPALVM_PROJECT_ROOT'] || host_drupalvm_dir
-host_config_dir = ENV['DRUPALVM_CONFIG_DIR'] ? "#{host_project_dir}/#{ENV['DRUPALVM_CONFIG_DIR']}" : host_project_dir
+host_project_dir = host_drupalvm_dir
+host_config_dir = host_drupalvm_dir
 
 # Absolute paths on the guest machine.
 guest_project_dir = '/vagrant'
-guest_drupalvm_dir = ENV['DRUPALVM_DIR'] ? "/vagrant/#{ENV['DRUPALVM_DIR']}" : guest_project_dir
-guest_config_dir = ENV['DRUPALVM_CONFIG_DIR'] ? "/vagrant/#{ENV['DRUPALVM_CONFIG_DIR']}" : guest_project_dir
+guest_drupalvm_dir = guest_project_dir
+guest_config_dir = guest_project_dir
 
-drupalvm_env = ENV['DRUPALVM_ENV'] || 'vagrant'
+drupalvm_env = 'vagrant'
 
-default_config_file = "#{host_drupalvm_dir}/default.config.yml"
+default_config_file = "#{host_drupalvm_dir}/config.yml"
 unless File.exist?(default_config_file)
   raise_message "Configuration file not found! Expected in #{default_config_file}"
 end
 
 vconfig = load_config([
-  default_config_file,
-  "#{host_config_dir}/config.yml",
-  "#{host_config_dir}/#{drupalvm_env}.config.yml",
-  "#{host_config_dir}/local.config.yml"
+  default_config_file
 ])
 
 provisioner = vconfig['force_ansible_local'] ? :ansible_local : vagrant_provisioner
@@ -52,12 +49,7 @@ Vagrant.configure('2') do |config|
   config.vm.hostname = vconfig['vagrant_hostname']
   config.vm.network :private_network,
     ip: vconfig['vagrant_ip'],
-    auto_network: vconfig['vagrant_ip'] == '0.0.0.0' && Vagrant.has_plugin?('vagrant-auto_network')
-
-  unless vconfig['vagrant_public_ip'].empty?
-    config.vm.network :public_network,
-      ip: vconfig['vagrant_public_ip'] != '0.0.0.0' ? vconfig['vagrant_public_ip'] : nil
-  end
+    auto_network: '0.0.0.0'
 
   # SSH options.
   config.ssh.insert_key = false
@@ -126,25 +118,5 @@ Vagrant.configure('2') do |config|
     v.customize ['modifyvm', :id, '--ioapic', 'on']
     v.gui = vconfig['vagrant_gui']
   end
-  
-  # Cache packages and dependencies if vagrant-cachier plugin is present.
-  if Vagrant.has_plugin?('vagrant-cachier')
-    config.cache.scope = :box
-    config.cache.auto_detect = false
-    config.cache.enable :apt
-    # Cache the composer directory.
-    config.cache.enable :generic, cache_dir: '/home/vagrant/.composer/cache'
-    config.cache.synced_folder_opts = {
-      type: vconfig['vagrant_synced_folder_default_type'],
-      nfs_udp: false
-    }
-  end
 
-  # Allow an untracked Vagrantfile to modify the configurations
-  [host_config_dir, host_project_dir].uniq.each do |dir|
-    eval File.read "#{dir}/Vagrantfile.local" if File.exist?("#{dir}/Vagrantfile.local")
-  end
 end
-
-
-# https://stefanscherer.github.io/access-private-github-repos-in-vagrant-up/

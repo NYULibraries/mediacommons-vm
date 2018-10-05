@@ -1,0 +1,30 @@
+#!/bin/bash
+
+function configure_solr() {
+  # Copy new Solr collection core with the Solr configuration provided by module.
+  sudo su - solr -c "/opt/solr/bin/solr create -c ${SOLR_CORE_NAME} -d ${SOLR_CORE_CONF}"
+  # Adjust the autoCommit time so index changes are committed in 1s.
+  sudo sed -i 's/\(<maxTime>\)\([^<]*\)\(<[^>]*\)/\11000\3/g' ${SOLR_CORE_PATH}/conf/solrconfig.xml
+  # Restart Apache Solr.
+  sudo service solr restart
+}
+
+VAGRANT_DIR=/vagrant
+
+SOLR_CORE_NAME=mediacommons
+
+SOLR_VERSION=solr-5.x
+
+SOLR_CORE_PATH="/var/solr/data/${SOLR_CORE_NAME}"
+
+SOLR_CORE_CONF=${VAGRANT_DIR}/source/mediacommons_core/drupal/sites/all/modules/apachesolr/solr-conf/$SOLR_VERSION/
+
+if sudo true; then
+  if sudo test ! -d "${SOLR_CORE_PATH}"; then
+    configure_solr
+  fi
+else
+  echo "SUDO AUTHENTICATION FAILED"
+fi
+
+exit 0

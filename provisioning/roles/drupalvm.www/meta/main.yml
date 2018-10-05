@@ -5,7 +5,6 @@ galaxy_info:
   issue_tracker_url: https://github.com/geerlingguy/drupal-vm/issues
   license: MIT
   min_ansible_version: 2.2
-
   platforms:
     - name: EL
       versions:

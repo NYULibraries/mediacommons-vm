@@ -1,20 +1,27 @@
 #!/bin/bash
 
-die () {
-  echo "file: ${0} | line: ${1} | step: ${2} | message: ${3}";
-  exit 1
-}
+# Defined in ~/.bashrc, but can be overwritten
+# DRUSH=${APP_DIR}/source/mediacommons/bin/drush-6.7.0/drush
+
+# Defined in ~/.bashrc, but can be overwritten
+# HOST=mediacommons.local
+
+# Defined in ~/.bashrc, but can be overwritten
+# PROTOCOL=http
+
+# Defined in ~/.bashrc, but can be overwritten
+# BUILD_PATH=/var/www/sites/${PROJECT}/builds
 
 echo "Revert all features"
 
 # Mediacommons main site and channel sites
 ALL_SITES=( alt-ac fieldguide imr intransition tne )
 
-/vagrant/code/mediacommons/bin/drush -y features-revert-all --root=/var/www/drupalvm/builds/mediacommons --uri=http://mediacommons.local
+${DRUSH} -y features-revert-all --root=${BUILD_PATH}/mediacommons/drupal --uri=${PROTOCOL}://${HOST}
 
 for site in ${ALL_SITES[*]}
   do
-    /vagrant/code/mediacommons/bin/drush -y features-revert-all --root=/var/www/drupalvm/builds/${site} --uri=http://mediacommons.local/${site}
+    ${DRUSH} -y features-revert-all --root=${BUILD_PATH}/${site}/drupal --uri=${PROTOCOL}://${HOST}/${site}
 done
 
 exit 0

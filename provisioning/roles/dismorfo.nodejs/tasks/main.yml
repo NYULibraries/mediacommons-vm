@@ -1,21 +1,21 @@
 ---
 
-- name: Download Node.js 8.x LTS Carbon repo.
+- name: Download Node.js 10.x.
   get_url:
-    url: "https://deb.nodesource.com/setup_8.x"
-    dest: "/root/nodejs_setup_8.x"
+    url: "https://deb.nodesource.com/setup_10.x"
+    dest: "/root/nodejs_setup_10.x"
 
-- name: Install Node.js 8.x LTS Carbon repo
+- name: Install Node.js 10.x repository
   command: >
-    bash /root/nodejs_setup_8.x
+    bash /root/nodejs_setup_10.x
 
-- name: Install Node.js 8.x LTS Carbon
+- name: Install Node.js 10.x
   apt:
     name: nodejs
     state: latest  
     install_recommends: yes
 
-- name: Ensure Node.js 8.x LTS Carbon is installed.
+- name: Ensure Node.js 10.x is installed.
   package:
     name: "nodejs"
     state: present
