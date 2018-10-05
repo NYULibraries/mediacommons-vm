@@ -59,6 +59,13 @@ apache_vhosts:
       - { files: "{{ drupal_core_path }}/intransition/drupal/sites/default/files", base: "/intransition", directory: "{{ drupal_core_path }}/intransition/drupal" }
       - { files: "{{ drupal_core_path }}/tne/drupal/sites/default/files", base: "/tne", directory: "{{ drupal_core_path }}/tne/drupal" }
       - { files: "{{ drupal_core_path }}/mediacommons/drupal/sites/default/files", base: "/", directory: "{{ drupal_core_path }}/mediacommons/drupal/" }
+    proxy_pass:
+      - { local: "/alt-ac/sites/default/files/", proxy: "http://mediacommons.org/alt-ac/sites/default/files/" }
+      - { local: "/fieldguide/sites/default/files/", proxy: "http://mediacommons.org/fieldguide/sites/default/files/" }
+      - { local: "/imr/sites/default/files/", proxy: "http://mediacommons.org/imr/sites/default/files/" }
+      - { local: "/intransition/sites/default/files/", proxy: "http://mediacommons.org/intransition/sites/default/files/" }
+      - { local: "/sites/default/files/", proxy: "http://mediacommons.org/sites/default/files/" }
+      - { local: "/tne/sites/default/files/", proxy: "http://mediacommons.org/tne/sites/default/files/" }
     extra_parameters: "{{ apache_vhost_php_fpm_parameters }}"
 
 apache_packages_state: latest

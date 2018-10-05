@@ -3,6 +3,12 @@
 {% for vhost in apache_vhosts %}
 <VirtualHost {{ apache_listen_ip }}:{{ apache_listen_port }}>
   ServerName {{ vhost.servername }}
+  {% if vhost.proxy_pass is defined %}
+    {% for proxy_pass in vhost.proxy_pass %}
+      ProxyPass {{ proxy_pass.local }} {{ proxy_pass.proxy }}
+      ProxyPassReverse {{ proxy_pass.local }} {{ proxy_pass.proxy }}
+    {% endfor %}
+  {% endif %}
   {% if vhost.serveralias is defined %}
   ServerAlias {{ vhost.serveralias }}
   {% endif %}
