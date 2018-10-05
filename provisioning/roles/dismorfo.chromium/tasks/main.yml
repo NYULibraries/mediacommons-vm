@@ -1,6 +1,6 @@
 ---
 
 - name: Install Chromium browser.
-  yum:
-    name:  chromium
+  apt:
+    name:  chromium-browser
     state: present

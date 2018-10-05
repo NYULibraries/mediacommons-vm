@@ -1,6 +1,6 @@
 ---
 
-vagrant_box: geerlingguy/centos7
+vagrant_box: geerlingguy/ubuntu1604
 vagrant_user: vagrant
 vagrant_synced_folder_default_type: nfs
 vagrant_gui: false
@@ -12,7 +12,7 @@ vagrant_ip: 192.168.88.88
 
 vagrant_synced_folders:
   - local_path: .
-    destination: /var/www/sites/"{{ vagrant_machine_name }}"
+    destination: "/var/www/sites/{{ vagrant_machine_name }}"
     type: nfs
     create: true
 
@@ -102,7 +102,7 @@ firewall_disable_ufw: true
 
 # PHP Configuration. Currently-supported versions: 5.6, 7.0, 7.1, 7.2.
 # See version-specific notes: http://docs.drupalvm.com/en/latest/configurations/php/
-php_version: "7.0"
+php_version: "7.2"
 php_install_recommends: no
 php_memory_limit: "192M"
 php_display_errors: "On"
@@ -122,7 +122,6 @@ php_fpm_listen: "127.0.0.1:9000"
 pre_provision_scripts: []
  
 post_provision_scripts: []
- 
 
 # MySQL Configuration.
 mysql_root_password: root

@@ -105,18 +105,107 @@
     line: "export SOLR_CORE={{ vagrant_host_protocol }}://{{ vagrant_hostname }}:8983/solr/{{ vagrant_machine_name }}"
   become: no
 
-- name: Copy init file to temporary directory
-  template:
-    src: "init.sh.j2"
-    dest: /tmp/init.sh
-    owner: vagrant
-    group: vagrant
-    mode: 0755
+- name: Creates databases directory
+  file: 
+    path: /vagrant/data/databases 
+    state: directory
+    recurse: yes
 
-- name: Init MediaCommons project
-  shell: "/tmp/init.sh"
-  become: yes
-  become_user: vagrant
+- name: Creates builds directory
+  file: 
+    path: /vagrant/builds
+    state: directory
+    recurse: yes
+
+- name: Clone MediaCommons Core
+  git:
+    repo: 'https://github.com/NYULibraries/mediacommons_core.git'
+    dest: /vagrant/source/mediacommons_core
+    version: master
+    depth: 1
+
+- name: Clone MediaCommons modules
+  git:
+    repo: 'https://github.com/NYULibraries/mediacommons_modules.git'
+    dest: /vagrant/source/mediacommons_modules
+    version: develop
+    depth: 1
+
+- name: Clone MediaCommons Umbrella profile
+  git:
+    repo: 'https://github.com/NYULibraries/mediacommons_umbrella.git'
+    dest: /vagrant/source/mediacommons_umbrella
+    version: develop
+    depth: 1
+
+- name: Clone MediaCommons Projects profile
+  git:
+    repo: 'https://github.com/NYULibraries/mediacommons_projects.git'
+    dest: /vagrant/source/mediacommons_projects
+    version: develop
+    depth: 1
+
+- name: Clone MediaCommons theme
+  git:
+    repo: 'https://github.com/NYULibraries/mediacommons_theme.git'
+    dest: /vagrant/source/mediacommons_theme
+    version: develop
+    depth: 1
+
+- name: Clone MediaCommons Admin theme
+  git:
+    repo: 'https://github.com/NYULibraries/mediacommons_admin.git'
+    dest: /vagrant/source/mediacommons_admin
+    version: develop
+    depth: 1
+
+- name: Create MediaCommons modules symbolic link 
+  file:
+    src: "/vagrant/source/mediacommons_modules"
+    dest: "/vagrant/source/mediacommons_core/drupal/sites/all/modules/mediacommons_modules"
+    state: link
+
+- name: Create MediaCommons Umbrella profile symbolic link 
+  file:
+    src: "/vagrant/source/mediacommons_umbrella"
+    dest: "/vagrant/source/mediacommons_core/drupal/profiles/mediacommons_umbrella"
+    state: link
+
+- name: Create MediaCommons Projects profile symbolic link 
+  file:
+    src: "/vagrant/source/mediacommons_projects"
+    dest: "/vagrant/source/mediacommons_core/drupal/profiles/mediacommons_projects"
+    state: link
+
+- name: Create MediaCommons theme symbolic link 
+  file:
+    src: "/vagrant/source/mediacommons_theme"
+    dest: "/vagrant/source/mediacommons_core/drupal/sites/all/themes/mediacommons"
+    state: link
+
+- name: Create MediaCommons Admin theme symbolic link 
+  file:
+    src: "/vagrant/source/mediacommons_admin"
+    dest: "/vagrant/source/mediacommons_core/drupal/sites/all/themes/mediacommons_admin"
+    state: link
+
+- name: Create MediaCommons site using MediaCommons core
+  command: cp -r /vagrant/source/mediacommons_core /vagrant/builds/mediacommons
+
+- name: Create ALT-AC site using MediaCommons core
+  command: cp -r /vagrant/source/mediacommons_core /vagrant/builds/alt-ac
+
+- name: Create Fieldguide site using MediaCommons core
+  command: cp -r /vagrant/source/mediacommons_core /vagrant/builds/fieldguide
+
+- name: Create IMR site using MediaCommons core
+  command: cp -r /vagrant/source/mediacommons_core /vagrant/builds/imr
+
+- name: Create [in]Transition site using MediaCommons core
+  command: cp -r /vagrant/source/mediacommons_core /vagrant/builds/intransition
+
+- name: Create TNE site using MediaCommons core
+  command: cp -r /vagrant/source/mediacommons_core /vagrant/builds/tne
 
 - name: Make sure default directory exists
   file:
@@ -130,7 +219,7 @@
     - { path: '/vagrant/builds/intransition/drupal/sites/default' }
     - { path: '/vagrant/builds/mediacommons/drupal/sites/default' }
     - { path: '/vagrant/builds/tne/drupal/sites/default' }
-    
+
 - name: Configure MediaCommons' sites settings.php.
   become: yes
   template:
@@ -143,4 +232,16 @@
     - { src: 'intransition.j2', dest: '/vagrant/builds/intransition/drupal/sites/default/settings.php' }
     - { src: 'mediacommons.j2', dest: '/vagrant/builds/mediacommons/drupal/sites/default/settings.php' }
     - { src: 'tne.j2', dest: '/vagrant/builds/tne/drupal/sites/default/settings.php' }
-  
+
+- name: Copy init file to temporary directory
+  template:
+    src: "init.sh.j2"
+    dest: /tmp/init.sh
+    owner: vagrant
+    group: vagrant
+    mode: 0755
+
+- name: Init MediaCommons project
+  shell: "/tmp/init.sh"
+  become: yes
+  become_user: vagrant
