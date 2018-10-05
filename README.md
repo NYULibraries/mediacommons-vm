@@ -27,7 +27,7 @@ $ vagrant plugin install vagrant-hostsupdater
 Mediacommons VM will install the following on an Ubuntu 16.04 linux VM:
 
 - Apache 2.4.x
-- PHP 5.6.x
+- PHP 7.2.x
 - MySQL 5.7.x
 - Drush
 - Apache Solr 5.5.5
@@ -44,14 +44,13 @@ After provisioning the VM all Mediacommons related code will live inside `code` 
 
 Each project has its own source-code repository:
 
-- [MediaCommons VM](https://github.com/NYULibraries/mediacommons-vm) a virtual machine built
 with Ansible (based on Drupal VM)
 - [MediaCommons Core](https://github.com/NYULibraries/mediacommons_core.git) - Drupal core files and 3rd party modules, themes and libraries
-- [MediaCommons](https://github.com/NYULibraries/mediacommons.git) - MediaCommons build and migration scripts
 - [MediaCommons Umbrella](https://github.com/NYULibraries/mediacommons_umbrella.git) - MediaCommons Umbrella install profile
-- [https://github.com/NYULibraries/mediacommons_projects](https://github.com/NYULibraries/mediacommons_projects.git) - MediaCommons Projects install profiles
-- [MediaCommons theme](https://github.com/NYULibraries/mediacommons_theme) - MediaCommons theme
-- [MediaCommons admin](https://github.com/NYULibraries/mediacommons_admin.git) - Admin theme for MediaCommons
+- [MediaCommons Project](https://github.com/NYULibraries/mediacommons_projects.git) - MediaCommons Projects insMediaCommons Projecttall profiles
+- [MediaCommons Theme](https://github.com/NYULibraries/mediacommons_theme) - MediaCommons theMediaCommons Projectme
+- [MediaCommons Admin](https://github.com/NYULibraries/mediacommons_admin.git) - Admin theme for MediaCommons
+- [MediaCommons Modules](https://github.com/NYULibraries/mediacommons_modules.git) - MediaCommons project default modules and features 
 
 ## Example of MediaCommons VM directory structure after provisioned
 
@@ -65,8 +64,7 @@ with Ansible (based on Drupal VM)
 |   |-- imr
 |   |-- mediacommons
 |   |-- tne 
-|-- code
-|   |-- mediacommons
+|-- source
 |   |-- mediacommons_admin
 |   |-- mediacommons_core
 |   |-- mediacommons_modules
@@ -84,7 +82,6 @@ with Ansible (based on Drupal VM)
 |   |-- copy_database_dumps.sh
 |   |-- copy_sites.sh
 |   |-- import_database_dump.sh
-|   |-- init.sh
 |   |-- solr.sh
 `-- Vagrantfile
 ```
@@ -94,8 +91,8 @@ NOTE: *`Source code is available in the host machine`. You have easy access to r
 NOTE: *Repositories are link to each build for easy development. See:*
 
 ```
-$ cd /vagrant/builds/mediacommons/sites/all/modules && ls -al | grep mediacommons
-lrwxrwxrwx  1 501 dialout   34 Jun 12 14:35 mediacommons_modules -> /vagrant/code/mediacommons_modules
+$ cd /vagrant/builds/mediacommons/drupal/sites/all/modules && ls -al | grep mediacommons
+lrwxrwxrwx  1 501 dialout   34 Jun 12 14:35 mediacommons_modules -> /vagrant/source/mediacommons_modules
 ```
 
 ## Quick Start Guide
@@ -128,7 +125,7 @@ Note: *You need to make sure your firewall allows for "Automatically allow signe
 
 If Vagrant provision the machine without errors you will see a message that reads:
 
-```bash
+```
 Your Vagrant box is ready to use!
 Visit the dashboard for an overview of your site: http://dashboard.mediacommos.local (or http://192.168.88.88)
 You can SSH into your machine with `vagrant ssh`. 
@@ -136,7 +133,7 @@ You can SSH into your machine with `vagrant ssh`.
 
 Note: *If you don't see the success message `stop`, and post an issue to this project's issue queue on GitHub with the error.*
 
-If you see that messages, we `successfully build the new machine` and `all the code related to MediaCommons is now available inside folder "code"`.
+If you see that messages, we `successfully build the new machine` and `all the code related to MediaCommons is now available inside folder "source"`.
 
 Note: *Sites are not ready to see yet.*
 
