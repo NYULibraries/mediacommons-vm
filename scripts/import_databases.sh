@@ -71,4 +71,6 @@ done
 
 import_databases
 
+${DRUSH} uli --root=${BUILD_PATH}/mediacommons/drupal
+
 exit 0
