@@ -6,6 +6,9 @@
 # Defined in ~/.bashrc, but can be overwritten
 # APP_DIR=/vagrant
 
+# Defined in ~/.bashrc, but can be overwritten
+# BUILD_PATH=/var/www/sites/mediacommons/builds
+
 function import_databases() {
   for site in ${SITES[*]}
     do
@@ -16,7 +19,14 @@ function import_databases() {
         mysql -e "CREATE DATABASE ${database} CHARACTER SET utf8 COLLATE utf8_general_ci"
         mysql ${database} < $DATABASE_PATH/$site.sql
         if [ $? -eq 0 ]; then
-          echo "Success"
+          echo "Success importing database $DATABASE_PATH/$site.sql" 
+          ${DRUSH} -y variable-set page_compression 0 --root=${BUILD_PATH}/${site}/drupal
+          ${DRUSH} -y variable-set cache 0 --root=${BUILD_PATH}/${site}/drupal
+          ${DRUSH} -y variable-set block_cache 0 --root=${BUILD_PATH}/${site}/drupal
+          ${DRUSH} -y variable-set preprocess_css 0 --root=${BUILD_PATH}/${site}/drupal
+          ${DRUSH} -y variable-set preprocess_js 0 --root=${BUILD_PATH}/${site}/drupal
+          ${DRUSH} -y cc all --root=${BUILD_PATH}/${site}/drupal
+          ${DRUSH} -y cron --root=${BUILD_PATH}/${site}/drupal
         else
           echo "Fail"
         fi
