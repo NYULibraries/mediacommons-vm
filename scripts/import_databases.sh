@@ -25,6 +25,7 @@ function import_databases() {
           ${DRUSH} -y variable-set block_cache 0 --root=${BUILD_PATH}/${site}/drupal
           ${DRUSH} -y variable-set preprocess_css 0 --root=${BUILD_PATH}/${site}/drupal
           ${DRUSH} -y variable-set preprocess_js 0 --root=${BUILD_PATH}/${site}/drupal
+          ${DRUSH} -y watchdog-delete all --root=${BUILD_PATH}/${site}/drupal
           ${DRUSH} -y cc all --root=${BUILD_PATH}/${site}/drupal
           ${DRUSH} -y cron --root=${BUILD_PATH}/${site}/drupal
         else
@@ -70,6 +71,8 @@ done
 [ -f "$HOME/.my.cnf" ] || die ${LINENO} "critical error" "Unable to read $HOME/.my.cnf"
 
 import_databases
+
+${DRUSH} drop-mail-passwords --root=${BUILD_PATH}/mediacommons/drupal
 
 ${DRUSH} uli --root=${BUILD_PATH}/mediacommons/drupal
 
