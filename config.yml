@@ -77,6 +77,7 @@ apache_mods_enabled:
   - rewrite.load
   - proxy.load
   - proxy_fcgi.load
+  - proxy_http.load
 
 # Comment out any extra utilities you don't want to install. If you don't want
 # to install *any* extras, set this value to an empty set, e.g. `[]`.
