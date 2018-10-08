@@ -1,6 +1,6 @@
 ---
 
-vagrant_box: geerlingguy/ubuntu1604
+vagrant_box: ortiz/mediacommons
 vagrant_user: vagrant
 vagrant_synced_folder_default_type: nfs
 vagrant_gui: false
