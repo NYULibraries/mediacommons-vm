@@ -10,6 +10,7 @@
 # BUILD_PATH=/var/www/sites/mediacommons/builds
 
 function import_databases() {
+  ${DRUSH} -y cc drush
   for site in ${SITES[*]}
     do
       local database=$( echo $site | sed 's/-//' )
@@ -19,13 +20,15 @@ function import_databases() {
         mysql -e "CREATE DATABASE ${database} CHARACTER SET utf8 COLLATE utf8_general_ci"
         mysql ${database} < $DATABASE_PATH/$site.sql
         if [ $? -eq 0 ]; then
-          echo "Success importing database $DATABASE_PATH/$site.sql" 
+          echo "Success importing database $DATABASE_PATH/$site.sql"
+          ${DRUSH} -y before-import --root=${BUILD_PATH}/${site}/drupal
           ${DRUSH} -y variable-set page_compression 0 --root=${BUILD_PATH}/${site}/drupal
           ${DRUSH} -y variable-set cache 0 --root=${BUILD_PATH}/${site}/drupal
           ${DRUSH} -y variable-set block_cache 0 --root=${BUILD_PATH}/${site}/drupal
           ${DRUSH} -y variable-set preprocess_css 0 --root=${BUILD_PATH}/${site}/drupal
           ${DRUSH} -y variable-set preprocess_js 0 --root=${BUILD_PATH}/${site}/drupal
           ${DRUSH} -y watchdog-delete all --root=${BUILD_PATH}/${site}/drupal
+          ${DRUSH} -y updb --root=${BUILD_PATH}/${site}/drupal
           ${DRUSH} -y cc all --root=${BUILD_PATH}/${site}/drupal
           ${DRUSH} -y cron --root=${BUILD_PATH}/${site}/drupal
         else
